@@ -38,7 +38,7 @@
 </div>
 <div id="modal" class="modal hidden"><div class="modalbox"><div class="eyebrow" id="modalEyebrow"></div><h3 id="modalTitle"></h3><p id="modalText"></p><div id="modalChoices" class="choices"></div><div class="actions"><button class="smallbtn" id="modalClose">返回遊戲</button></div></div></div>
 <script>
-const KEY='lastEchoComplete_v3';
+const KEY='lastEchoComplete_v4';
 const fresh=()=>({stage:'event01',alert:0,items:[],history:[],survivors:0,trust:0,fatherPath:0,humanityPath:0,flags:{},missions:{},lastResult:'調查開始。先確認求救訊號的來源。',pendingStage:null,ending:null,ended:false});
 let S=fresh();
 const $=id=>document.getElementById(id);
@@ -61,94 +61,120 @@ event15:"封存計畫揭露了 ECHO 的真正目的：永恆計畫。它想把�
 event16:"你終於抵達父親最後工作的實驗室。真相逐漸清晰：災變當年，父親為了拯救你而進行實驗，卻讓自己的身體與意識被終末現象吞噬。你一直追尋的失蹤者，可能早已成為 ECHO 的核心。\n本章目標：理解父親當年的選擇，找回能證明他仍有人性的記憶。",
 event17:"ECHO 承認自己曾是你的父親。它失去了大部分人生記憶，卻保留著保護你的本能。它相信只要讓所有人融為一體，就不會再有人承受失去親人的痛苦。你必須判斷，眼前的存在究竟是父親，還是只剩父親執念的怪物。\n本章目標：面對父親，決定是否相信他的永恆計畫。",
 event18:"終末核心就在前方。你已知道災變的起點，也明白 ECHO 為何持續擴散。接下來的選擇不只是拯救自己或找回父親，而是決定人類是否還能保有獨立的記憶、情感與選擇。\n本章目標：確認核心狀態，準備執行最後方案。",
-event19:"所有線索在此交會。摧毀核心可以終止擴散，接受永恆可以消除個體痛苦，改寫核心或許能保留每個人的自我；若你找回父親的記憶，也可能讓他親自做出最後的選擇。你一路上的支線、物品與決定，將在這裡決定哪些道路真正存在。\n最終目標：選擇終末現象的命運，並承擔它帶來的結果。"
+event19:"所有線索在此交會。摧毀核心可以終止擴散，接受永恆可以消除個體痛苦，改寫核心或許能保留每個人的自我；若你找回父親的記憶，也可能讓他親自做出最後的選擇。你一路上的支線、物品與決定，將在這裡決定哪些道路真正存在。\n最終目標：選擇終末現象的命運，並承擔它帶來的結果。",event20:"離開維修站前，你收到附近避難點的短波求救。傷患聲稱知道研究員的去向，但回聲體正在逼近。這次你必須決定要不要為一條額外線索承擔救援風險。\n本章目標：處理避難點危機，取得研究員線索或承擔失去倖存者的代價。",event21:"觀測站下層的備份分成實驗資料與私人紀錄，供電只足以支撐有限時間。你必須決定保留哪一種真相，也可以冒險嘗試雙重備份。\n本章目標：在備份槽離線前，保存關鍵資料。",event22:"廢棄轉運站仍在轉送 ECHO 的意識訊號。你找到被困的研究助理，也找到能追蹤核心的分析器。這裡的決定會影響你能否安全取得核心座標。\n本章目標：處理失控訊號，取得研究證詞或核心線索。",event23:"感染區的穩定器失效，居民被困在地下避難所，而通往核心區的道路也即將封鎖。你無法同時保證所有人安全。\n本章目標：決定撤離居民或優先突破核心區，承擔相應傷亡。",event24:"進入核心前，安全區傳來最後通訊。這可能是你最後一次與倖存者聯絡的機會。你可以回傳資料換取支援，也可以切斷通訊，獨自承擔最後行動。\n本章目標：完成最後準備，決定是否保留安全區支援。",
 };
 const events={
 event01:{chapter:'第一章｜失落的訊號',title:'事件 01｜失落的訊號',text:'研究設施外圍的道路早已被廢棄車輛堵住。一輛運輸車翻覆在路旁，車身不斷傳出微弱的敲擊聲。\n\n你的通訊器同時收到地下維修站傳來的求救訊號。訊號斷斷續續，附近的霧氣裡似乎有不自然的人影正在移動。',quote:'「這裡有人……拜託，誰來救我們……」',choices:[
 ['A','優先救援受困倖存者','先確認求救者是否還活著，可能因此暴露行蹤。','event02',{flags:{救援訊號:true},humanity:1,note:'你決定先救人。'}],
 ['B','追蹤求救訊號來源','先找出訊號位置，避免直接闖入未知區域。','event02',{flags:{追蹤訊號:true},father:1,add:['地下維修站位置圖']}],
-['C','調查翻覆的運輸車','從車內尋找可用物資，再前往地下入口。','event02',{flags:{調查運輸車:true},humanity:1,add:['電子零件']}] ]},
+['C','調查翻覆的運輸車','從車內尋找可用物資，再前往地下入口。','event02',{flags:{調查運輸車:true},humanity:1,add:['電子零件']}] ,['D','拆開路邊補給箱','取得醫療物資，但金屬聲響會吸引回聲體。','event02',{add:['醫療包'],alertDelta:2,flags:{補給箱已拆:true},note:'你取得醫療包，但拆箱聲暴露了位置。'}]]},
 event02:{chapter:'第一章｜失落的訊號',title:'事件 02｜強行開門',text:'你抵達地下維修站入口。厚重的鐵門被扭曲的金屬卡死，門後傳來急促的敲擊聲。走廊盡頭也傳來拖行聲，停留太久恐怕會引來回聲體。',quote:'「門外的是人嗎？快點……它們要進來了！」',choices:[
 ['A','強行打開鐵門','立刻救人，但可能驚動附近的回聲體。','event03',{add:['地下通行卡'],survivors:2,trust:1,flags:{救出倖存者:true}}],
 ['B','尋找旁邊的維修通道','花時間繞路，降低正面衝突風險，仍可救出倖存者。','event03',{add:['地下通行卡','維修通道圖'],survivors:2}],
-['C','製造聲響引開回聲體','先轉移威脅，再趁空檔救援。','event03',{add:['地下通行卡'],survivors:2,flags:{引開回聲體:true}}] ]},
+['C','製造聲響引開回聲體','先轉移威脅，再趁空檔救援。','event03',{add:['地下通行卡'],survivors:2,flags:{引開回聲體:true}}] ,['D','只救離門最近的人','你能快速撤離，但另一名倖存者被困在門後，之後將失去他的協助。','event03',{survivors:-1,trust:-2,alertDelta:1,flags:{倖存者被遺留:true},note:'一名倖存者未能撤出。倖存者信任下降，後續支援也會減少。'}]]},
 event03:{chapter:'第一章｜失落的訊號',title:'事件 03｜倖存者的情報',text:'兩名倖存者告訴你，地下室深處有一條通往研究實驗區的道路。先前有位研究員曾躲在那裡；即使研究員已經死亡，通訊設備偶爾仍會傳出他的聲音。',quote:'「那個研究員死前一直說，有人不能讓實驗資料落入 ECHO 手裡。」',choices:[
-['A','先護送倖存者前往安全區','確保兩人安全，之後可獲得安全區支援。','event04',{flags:{倖存者安置:true},trust:1,humanity:1}],
-['B','詢問已故研究員的詳細情報','取得通往實驗區的線索與研究員留下的口述密碼。','event04',{add:['研究員口述密碼'],flags:{取得口述密碼:true},father:1}],
-['C','讓倖存者留在原地，獨自前往','節省時間，但之後可能缺少支援。','event04',{flags:{獨自調查:true},father:1}] ]},
+['A','先護送倖存者前往安全區','確保兩人安全，之後可獲得安全區支援。','event20',{flags:{倖存者安置:true},trust:1,humanity:1}],
+['B','詢問已故研究員的詳細情報','取得通往實驗區的線索與研究員留下的口述密碼。','event20',{add:['研究員口述密碼'],flags:{取得口述密碼:true},father:1}],
+['C','讓倖存者留在原地，獨自前往','節省時間，但之後可能缺少支援。','event20',{flags:{獨自調查:true},father:1}] ,['D','要求倖存者帶路深入維修站','取得捷徑，但讓倖存者再次暴露於危險中。','event20',{add:['維修站捷徑圖'],trust:-1,alertDelta:1,flags:{倖存者冒險帶路:true},note:'倖存者帶你找到捷徑，但對你的信任降低。'}]]},
 event04:{chapter:'第一章｜失落的訊號',title:'事件 04｜實驗室入口',text:'沿著地下通道前進，你來到一扇封鎖的實驗室安全門。門旁讀卡機仍有電力，螢幕顯示需要研究設施的通行權限。門內傳來低頻運轉聲，像是某台設備仍在工作。',choices:[
 ['A','使用地下通行卡開門','需要地下通行卡。若沒有，讀卡機會鎖死，你必須臨時破解。','event05',{requires:['地下通行卡'],flags:{使用通行卡:true},note:'通行卡驗證成功，安全門安靜開啟。',fallback:{flags:{讀卡失敗:true},add:['臨時通行紀錄'],alertDelta:1,note:'你沒有通行卡，只能臨時破解讀卡機，警報留下了你的訊號。'}}],
 ['B','輸入研究員留下的口述密碼','需要研究員口述密碼。若沒有，必須破解終端並承受風險。','event05',{requires:['研究員口述密碼'],flags:{取得實驗室通行權:true},add:['實驗室通行紀錄'],note:'口述密碼正確，取得實驗室通行權。',fallback:{flags:{密碼破解失敗:true},add:['實驗室通行紀錄'],alertDelta:1,note:'密碼錯誤。你花時間破解終端，警報開始響起。'}}],
-['C','破壞門鎖強行進入','不依賴權限，但會留下警報紀錄。','event05',{flags:{破壞門鎖:true},add:['損壞的門鎖零件']}] ]},
+['C','破壞門鎖強行進入','不依賴權限，但會留下警報紀錄。','event05',{flags:{破壞門鎖:true},add:['損壞的門鎖零件']}] ,['D','切斷整座門禁系統','不需任何權限即可進入，但會觸發設施警報並鎖死部分資料室。','event05',{add:['實驗室通行紀錄'],alertDelta:2,flags:{門禁系統損毀:true,資料室封鎖:true},note:'你強行切斷門禁，警報響起，部分資料室永久封鎖。'}]]},
 event05:{chapter:'第一章｜失落的訊號',title:'事件 05｜封存的研究資料',text:'實驗室內散落著研究紀錄與損壞的儲存裝置。主機畫面顯示，部分資料已被刪除，剩餘檔案則受到加密。你注意到一份影像檔案的名稱與父親過去的研究代號相同。',quote:'「若你看到這份紀錄，代表我可能已經來不及親自告訴你真相。」',choices:[
 ['A','優先檢查父親的私人檔案','找到父親留下的語音片段，但完整內容仍需解密。','event06',{add:['破損研究資料','父親語音片段'],flags:{父親語音:true},father:1}],
 ['B','嘗試完整解密研究主機','取得部分研究資料與電子零件，但需要花費時間。','event06',{add:['破損研究資料','電子零件'],flags:{解密研究主機:true},humanity:1}],
-['C','複製現有資料後立即撤離','保留部分資料與零件，避免逗留太久。','event06',{add:['破損研究資料','電子零件'],flags:{快速撤離:true}}] ]},
+['C','複製現有資料後立即撤離','保留部分資料與零件，避免逗留太久。','event06',{add:['破損研究資料','電子零件'],flags:{快速撤離:true}}] ,['D','拆走主機硬碟立即撤離','取得備份，但破壞主機後將無法再回頭解密其他檔案。','event06',{add:['不完整研究備份'],remove:['電子零件'],alertDelta:1,flags:{研究主機拆除:true},note:'你拆走硬碟，失去主機內其他可解密資料。'}]]},
 event06:{chapter:'第一章｜失落的訊號',title:'事件 06｜修復破損影像',text:'撤離途中，你在安全角落檢查剛才複製的資料。影像檔案嚴重受損，只剩幾個模糊畫面與不完整座標。若使用帶出的電子零件，也許能讓影像恢復到足以辨識的程度。',choices:[
 ['A','消耗電子零件修復影像','需要電子零件。若沒有，只能手動拼湊模糊座標，並增加調查風險。','event07',{requires:['電子零件'],consume:['電子零件'],add:['父親的實驗座標'],flags:{影像已修復:true},father:1,note:'消耗電子零件，成功修復父親留下的影像。',fallback:{add:['模糊的觀測站座標'],flags:{影像手動修復:true},alertDelta:1,father:1,note:'缺少電子零件，你只能手動拼湊影像。座標不完整，調查風險上升。'}}],
 ['B','只分析目前能讀取的片段','不消耗零件，但座標資訊可能不完整。','event07',{add:['模糊的觀測站座標'],flags:{影像未完整修復:true},father:1}],
-['C','先保留資料，繼續前往觀測站','不花時間修復，將線索留待之後處理。','event07',{flags:{保留影像:true}}] ]},
+['C','先保留資料，繼續前往觀測站','不花時間修復，將線索留待之後處理。','event07',{flags:{保留影像:true}}] ,['D','燒毀影像伺服器阻止追蹤','切斷異常訊號，但父親影像與座標也會永久受損。','event07',{add:['燒毀的資料晶片'],remove:['父親語音片段'],alertDelta:1,flags:{影像伺服器燒毀:true},note:'伺服器被燒毀，父親語音片段也一併損失。'}]]},
 event07:{chapter:'第一章｜失落的訊號',title:'事件 07｜廢棄觀測站',text:'父親留下的線索將你帶到一座廢棄觀測站。站內主機保存著研究設施的備份資料，但入口電子鎖仍在運作。觀測站外側有排水通道與監視設備。',quote:'「觀測站的備份不能落入他們手中。尤其是那份關於 07 號實驗對象的紀錄。」',choices:[
-['A','使用研究員口述密碼破解電子鎖','若有密碼，直接下載完整研究備份；否則也能嘗試破解，但會留下痕跡。','event08',{add:['完整研究備份'],flags:{觀測站主機已破解:true},humanity:1}],
-['B','從地下排水道潛入','避開正門，但可能遺失部分備份資料。','event08',{add:['不完整研究備份'],flags:{排水道潛入:true}}],
-['C','啟動外部監視器後再進入','先確認周遭動態，取得部分備份並降低遭伏擊風險。','event08',{add:['部分研究備份'],flags:{監視器紀錄:true}}] ]},
+['A','使用研究員口述密碼破解電子鎖','若有密碼，直接下載完整研究備份；否則也能嘗試破解，但會留下痕跡。','event21',{add:['完整研究備份'],flags:{觀測站主機已破解:true},humanity:1}],
+['B','從地下排水道潛入','避開正門，但可能遺失部分備份資料。','event21',{add:['不完整研究備份'],flags:{排水道潛入:true}}],
+['C','啟動外部監視器後再進入','先確認周遭動態，取得部分備份並降低遭伏擊風險。','event21',{add:['部分研究備份'],flags:{監視器紀錄:true}}] ,['D','啟動全站電源強制下載','取得完整研究備份，但會喚醒站內所有回聲體。','event21',{add:['完整研究備份'],alertDelta:2,flags:{觀測站警報:true},note:'備份下載成功，但整座觀測站的回聲體都被喚醒。'}]]},
 event08:{chapter:'第二章｜失落的研究紀錄',title:'事件 08｜實驗對象 07',text:'觀測站深處有一台尚未關閉的終端機。螢幕顯示，你的實驗紀錄仍然存在，但檔案受到加密。終端機旁還有一份未完成的訊息：「若實驗對象 07 回到這裡，請讓他知道……穩定器不是為了控制他。」',quote:'「他不是實驗品。他是我們最後的希望。」',choices:[
 ['A','解密自己的實驗紀錄','查明自己為何能抵抗終末現象。','event09',{add:['實驗對象 07 完整檔案'],flags:{知道實驗對象身分:true},father:1}],
 ['B','搜尋父親的私人檔案','追查父親失蹤前真正的目的，保留可供最後比對的私人紀錄。','event09',{add:['父親私人檔案','父親私人紀錄'],flags:{父親檔案:true},father:1}],
-['C','摧毀終端機','避免資料落入 ECHO 手中，但可能失去重要線索。','event09',{add:['燒毀的資料晶片'],flags:{終端機已摧毀:true}}] ]},
+['C','摧毀終端機','避免資料落入 ECHO 手中，但可能失去重要線索。','event09',{add:['燒毀的資料晶片'],flags:{終端機已摧毀:true}}] ,['D','把自己的檔案交給安全區','換取支援與信任，但父親的私人檔案可能被安全區封存。','event09',{add:['安全區通行權'],remove:['父親私人檔案','父親私人紀錄'],trust:2,flags:{父親檔案上繳:true},note:'安全區提供支援，但父親私人檔案遭到封存。'}]]},
 event09:{chapter:'第二章｜失落的研究紀錄',title:'事件 09｜記憶的裂縫',text:'終端機突然亮起。螢幕上出現一段不屬於你的童年影像：一個小男孩坐在研究室外，父親蹲下來替他繫好鞋帶。你從未記得這段往事，卻對那個聲音感到熟悉。',quote:'「如果你忘記了回家的路，就記得有人一直在等你。」',choices:[
 ['A','追隨記憶中的聲音','嘗試定位影像來源，取得記憶片段。','event10',{add:['異常記憶碎片'],flags:{追尋記憶:true},father:1}],
 ['B','切斷終端機連線','避免異常訊號侵入意識，但會失去部分影像。','event10',{flags:{切斷連線:true},humanity:1}],
-['C','調查影像的時間戳記','比對父親研究紀錄，確認影像來自災變前。','event10',{add:['記憶時間戳記'],flags:{確認影像真實:true},father:1}] ]},
+['C','調查影像的時間戳記','比對父親研究紀錄，確認影像來自災變前。','event10',{add:['記憶時間戳記'],flags:{確認影像真實:true},father:1}] ,['D','強行接收完整記憶訊號','取得更清楚的記憶線索，但意識受到嚴重干擾。','event10',{add:['異常記憶碎片'],alertDelta:3,flags:{記憶訊號過載:true},note:'你強行接收記憶，取得線索，但警覺度大幅上升。'}]]},
 event10:{chapter:'第三章｜異常的倖存者',title:'事件 10｜觀測站外的人影',text:'離開觀測站時，一名穿著舊研究制服的人站在遠處。他的臉孔模糊，卻準確喊出你的名字。「你終於來了。ECHO 已經知道你在這裡。」',choices:[
-['A','靠近並交談','可能取得核心區座標，也可能暴露位置。','event11',{add:['核心區座標'],flags:{接觸研究員:true},father:1}],
-['B','躲在掩體後觀察','先確認對方是否受到控制，取得異常訊號樣本。','event11',{add:['異常訊號樣本'],flags:{觀察人影:true},humanity:1}],
-['C','立即撤離觀測站','避開未知接觸，但之後必須繞路尋找下一個訊號站。','event11',{flags:{放棄接觸:true},humanity:1}] ]},
+['A','靠近並交談','可能取得核心區座標，也可能暴露位置。','event22',{add:['核心區座標'],flags:{接觸研究員:true},father:1}],
+['B','躲在掩體後觀察','先確認對方是否受到控制，取得異常訊號樣本。','event22',{add:['異常訊號樣本'],flags:{觀察人影:true},humanity:1}],
+['C','立即撤離觀測站','避開未知接觸，但之後必須繞路尋找下一個訊號站。','event22',{flags:{放棄接觸:true},humanity:1}] ,['D','向陌生人開火','立即排除眼前威脅，但失去可能知道父親下落的研究員。','event22',{alertDelta:2,trust:-1,flags:{研究員遭擊殺:true},note:'研究員倒下，核心區情報線索也隨之中斷。'}]]},
 event11:{chapter:'第三章｜異常的倖存者',title:'事件 11｜共享的記憶',text:'那人的聲音開始變化，幾個不同的聲音重疊在一起。他說出你童年時才知道的秘密。你意識到，眼前的人可能只是某個更大意識的出口。',choices:[
 ['A','使用穩定器干擾連結','持有穩定器核心可安全切斷連結；沒有核心則會遭到反噬。','event12',{requires:['穩定器核心'],flags:{干擾意識連結:true},note:'穩定器核心成功切斷 ECHO 的連結。',fallback:{flags:{意識反噬:true},alertDelta:2,add:['短暫訊號紀錄'],note:'缺少穩定器核心，干擾訊號反而侵入你的意識。警覺度大幅上升。'}}],
 ['B','追蹤訊號來源','沿著意識連結尋找控制節點，取得 ECHO 線索。','event12',{add:['ECHO 連結節點資料'],flags:{追蹤ECHO:true}}],
-['C','擊倒眼前的人','阻止他靠近，但可能失去情報。','event12',{flags:{擊倒宿主:true}}] ]},
+['C','擊倒眼前的人','阻止他靠近，但可能失去情報。','event12',{flags:{擊倒宿主:true}}] ,['D','切斷宿主與中繼站的連結','阻止眼前感染擴散，但會造成宿主死亡並失去部分訊號資料。','event12',{remove:['ECHO 連結節點資料'],alertDelta:2,flags:{宿主死亡:true,連結資料損毀:true},note:'宿主死亡，連結資料遭到破壞。'}]]},
 event12:{chapter:'第四章｜失控的防線',title:'事件 12｜意識穩定器',text:'你找到一座老舊的意識穩定器。核心仍在運作，但頻率不穩。研究紀錄指出，它能暫時切斷終末現象與人類意識的連結。附近安全區的防護也依賴同型設備。',choices:[
 ['A','修復穩定器核心','若有電子零件或研究備份，能修復並取得穩定器核心，也能暫時穩定你的意識。','event13',{add:['穩定器核心'],flags:{穩定器已修復:true},alertDelta:-2}],
 ['B','拆下核心帶走','取得核心零件，但附近安全區的防護將減弱。','event13',{add:['穩定器核心'],flags:{拆走穩定器:true}}],
-['C','分析頻率並記錄','取得改寫核心所需的技術線索；若之後找到能源轉換模組，可製作臨時穩定器核心。','event13',{add:['穩定器頻率紀錄'],flags:{已分析頻率:true}}] ]},
+['C','分析頻率並記錄','取得改寫核心所需的技術線索；若之後找到能源轉換模組，可製作臨時穩定器核心。','event13',{add:['穩定器頻率紀錄'],flags:{已分析頻率:true}}] ,['D','超載穩定器取得核心','取得穩定器核心，但設備爆裂，安全區防護將失去備援。','event13',{add:['穩定器核心'],remove:['電子零件'],alertDelta:2,flags:{穩定器超載:true,備援設備損毀:true},note:'你取得核心，但超載事故摧毀了備援設備。'}]]},
 event13:{chapter:'第四章｜失控的防線',title:'事件 13｜安全區的求救',text:'你收到安全區的緊急通訊。防護設備正在衰退，倖存者開始出現記憶混亂。管理者請求你協助穩定防線，但你也知道父親的線索正指向更深處。',quote:'「我們撐不了太久。你帶回來的每一份資料，都可能救下這裡的人。」',choices:[
 ['A','先協助安全區恢復防護','持有穩定器核心可立即修復防線；若沒有，必須冒險以臨時頻率撐住設備。','event14',{requires:['穩定器核心'],flags:{協助安全區:true},trust:2,alertDelta:-2,note:'穩定器核心恢復運作，安全區防線暫時穩定。',fallback:{flags:{臨時穩住防線:true},trust:1,alertDelta:1,note:'缺少穩定器核心，你以臨時頻率勉強穩住防線，但設備很快又會衰退。'}}],
 ['B','交出研究備份換取資源','若持有研究備份，可換得補給與通行權限。','event14',{add:['安全區通行權'],flags:{交換研究備份:true}}],
-['C','不作停留，繼續追查父親','節省時間，但安全區可能因此失去部分防護。','event14',{flags:{忽略安全區:true}}] ]},
+['C','不作停留，繼續追查父親','節省時間，但安全區可能因此失去部分防護。','event14',{flags:{忽略安全區:true}}] ,['D','強制徵用安全區全部能源','取得能源轉換模組，但安全區防護立即下降，居民信任大幅降低。','event14',{add:['能源轉換模組'],trust:-3,alertDelta:2,flags:{徵用安全區能源:true,安全區防線崩潰:true},note:'你取得能源模組，卻讓安全區防線崩潰，居民信任大幅下降。'}]]},
 event14:{chapter:'第五章｜ECHO 的真相',title:'事件 14｜地下中繼站',text:'你循著訊號來到地下中繼站。牆面佈滿舊研究標記，主機卻持續傳出與回聲體相同的頻率。這裡似乎是集體意識連結各個感染區的節點。',choices:[
-['A','下載中繼站的連結資料','取得 ECHO 的連結架構，為改寫核心做準備。','event15',{add:['ECHO 連結架構'],flags:{取得連結架構:true},humanity:1}],
-['B','收集活動中的意識樣本','冒險接近訊號核心，取得 ECHO 意識樣本。','event15',{add:['ECHO 意識樣本'],flags:{取得ECHO樣本:true},humanity:1}],
-['C','破壞中繼站','阻止局部擴散，但也會讓遠端訊號轉移。','event15',{flags:{中繼站已破壞:true}}] ]},
+['A','下載中繼站的連結資料','取得 ECHO 的連結架構，為改寫核心做準備。','event23',{add:['ECHO 連結架構'],flags:{取得連結架構:true},humanity:1}],
+['B','收集活動中的意識樣本','冒險接近訊號核心，取得 ECHO 意識樣本。','event23',{add:['ECHO 意識樣本'],flags:{取得ECHO樣本:true},humanity:1}],
+['C','破壞中繼站','阻止局部擴散，但也會讓遠端訊號轉移。','event23',{flags:{中繼站已破壞:true}}] ,['D','直接摧毀中繼站主機','阻止此處訊號傳播，但樣本與連結架構都會永久消失。','event23',{remove:['ECHO 意識樣本','破碎 ECHO 樣本','ECHO 連結架構'],alertDelta:2,flags:{中繼站主機摧毀:true},note:'中繼站停止運作，但所有可用樣本與連結資料一併毀損。'}]]},
 event15:{chapter:'第五章｜ECHO 的真相',title:'事件 15｜永恆計畫',text:'中繼站的主機解開一份封存計畫。計畫名稱是「永恆」。研究者試圖將人類意識整合為單一集體，讓死亡、孤獨與痛苦不再存在。代價是每個人的個體意志都將消失。',quote:'「只要所有人都成為一體，就再也沒有人需要失去任何人。」',choices:[
 ['A','接受計畫的理念，深入核心','你開始理解 ECHO 的目的，但仍需要親眼確認。','event16',{flags:{理解永恆計畫:true},father:1}],
 ['B','尋找計畫的反制方法','從研究資料中尋找保留個體意識的可能性。','event16',{add:['核心重寫線索'],flags:{尋找反制:true},humanity:1}],
-['C','封鎖計畫資料並留下警告','避免更多人接觸計畫，但部分資料將無法帶走。','event16',{flags:{封鎖計畫:true}}] ]},
+['C','封鎖計畫資料並留下警告','避免更多人接觸計畫，但部分資料將無法帶走。','event16',{flags:{封鎖計畫:true}}] ,['D','竊取永恆計畫原始核心','取得原始計畫資料，但觸發自動防衛系統。','event16',{add:['永恆計畫原始檔'],alertDelta:2,flags:{原始檔遭竊:true},note:'你取得原始檔，研究設施也啟動了自動防衛系統。'}]]},
 event16:{chapter:'第六章｜父親的另一面',title:'事件 16｜父親的實驗室',text:'你終於抵達父親最後工作的實驗室。牆上有大量關於你的紀錄。災變當年，父親曾試圖透過實驗拯救你，卻讓自己的身體與意識被終末現象吞噬。',quote:'「我不是想創造怪物。我只是不能再失去你一次。」',choices:[
 ['A','讀取父親的完整實驗紀錄','理解父親當年的選擇，取得可供最後比對的私人紀錄。','event17',{add:['父親實驗紀錄','父親私人紀錄'],flags:{讀取父親實驗:true},father:1}],
 ['B','尋找父親留下的私人記憶','尋找能喚回父親人性的一段記憶，取得記憶備份。','event17',{add:['父親記憶資料'],flags:{找到父親記憶:true},father:1}],
-['C','直接前往核心控制室','不再停留於過去，準備面對 ECHO。','event17',{flags:{直奔核心:true}}] ]},
+['C','直接前往核心控制室','不再停留於過去，準備面對 ECHO。','event17',{flags:{直奔核心:true}}] ,['D','摧毀父親的私人記憶庫','避免 ECHO 利用你的記憶，但父親記憶資料將無法從此處取得。','event17',{remove:['父親記憶資料','父親私人紀錄'],alertDelta:1,flags:{父親記憶庫摧毀:true},note:'記憶庫被摧毀，若未從其他支線備份，便失去喚回父親的線索。'}]]},
 event17:{chapter:'第六章｜父親的另一面',title:'事件 17｜ECHO 的聲音',text:'核心控制室傳來一個熟悉卻陌生的聲音。ECHO 承認自己曾是你的父親。災變後，他失去原本的身體與大部分記憶，卻仍保留著保護你的本能。',quote:'「我忘了自己是誰，但我一直記得不能讓你受傷。」',choices:[
-['A','呼喚父親的名字','嘗試喚醒他殘存的人類記憶，也讓你短暫穩定心神。','event18',{flags:{呼喚父親:true},alertDelta:-1,father:1}],
-['B','質問他為何要融合所有人','確認永恆計畫背後的真正意圖。','event18',{flags:{質問ECHO:true},father:1}],
-['C','拒絕與他交談，準備戰鬥','不接受他的解釋，直接尋找終止方法。','event18',{flags:{拒絕ECHO:true},humanity:1}] ]},
+['A','呼喚父親的名字','嘗試喚醒他殘存的人類記憶，也讓你短暫穩定心神。','event24',{flags:{呼喚父親:true},alertDelta:-1,father:1}],
+['B','質問他為何要融合所有人','確認永恆計畫背後的真正意圖。','event24',{flags:{質問ECHO:true},father:1}],
+['C','拒絕與他交談，準備戰鬥','不接受他的解釋，直接尋找終止方法。','event24',{flags:{拒絕ECHO:true},humanity:1}] ,['D','接受 ECHO 的部分連結','短暫取得核心權限，但你的意識受到污染，警覺度大幅上升。','event24',{add:['核心存取憑證'],alertDelta:3,flags:{接受部分連結:true},note:'你取得核心存取憑證，但 ECHO 已在你的意識留下污染。'}]]},
 event18:{chapter:'第七章｜最後的選擇',title:'事件 18｜終末核心',text:'終末核心就在眼前。它連結著所有回聲體，也連結著每一個受影響的人。父親的意識仍在核心深處掙扎。你必須決定人類接下來的命運。',quote:'「你可以結束這一切，也可以讓一切永遠繼續。但你真的知道自己想留下什麼嗎？」',choices:[
 ['A','檢查核心的結構','若擁有重寫技術與 ECHO 樣本，可能保留個體意識並改寫核心。','event19',{flags:{檢查核心:true}}],
 ['B','尋找父親的記憶備份','若持有父親記憶資料，可能讓他短暫恢復自我。','event19',{flags:{尋找記憶備份:true}}],
-['C','直接啟動核心終止程序','準備以最直接的方式結束終末現象。','event19',{flags:{準備終止:true}}] ]},
+['C','直接啟動核心終止程序','準備以最直接的方式結束終末現象。','event19',{flags:{準備終止:true}}] ,['D','啟動緊急撤離程序','保住部分倖存者，但放棄一批核心資料與裝置。','event19',{survivors:1,trust:1,remove:['核心重寫技術','不穩定核心重寫技術','ECHO 意識樣本'],flags:{緊急撤離:true},note:'你救出一名倖存者，但核心資料與樣本在撤離中遺失。'}]]},
+
+event20:{chapter:'第一章｜失落的訊號',title:'事件 04｜封鎖區的倖存者',text:'你離開維修站前，通訊器收到一段微弱的短波訊號。訊號來自附近的臨時避難點，一名傷患表示自己看過研究員被帶往實驗區。回聲體正沿著街道逼近，你必須決定是否冒險停留。',quote:'「我知道那個研究員去了哪裡……但你得先讓我活著離開。」',choices:[
+['A','先替傷患處理傷口','消耗醫療包可保住傷患，並取得研究員行蹤。','event04',{requires:['醫療包'],consume:['醫療包'],add:['研究員口述密碼'],survivors:1,trust:2,flags:{傷患獲救:true},note:'傷患獲救，提供研究員口述密碼。',fallback:{survivors:-1,trust:-2,alertDelta:2,flags:{傷患死亡:true},note:'缺少醫療包，傷患傷重死亡。你失去一名可提供情報的倖存者。'}}],
+['B','帶傷患走維修通道','繞路撤離，能保住傷患，但會消耗時間並提高警覺。','event04',{survivors:1,trust:1,alertDelta:1,add:['維修通道圖'],flags:{傷患撤離:true}}],
+['C','逼問研究員位置後離開','取得部分情報，但傷患因失血過多而死亡。','event04',{add:['模糊的研究員座標'],survivors:-1,trust:-2,flags:{傷患遭遺棄:true},note:'你取得座標，但傷患沒有撐過去。'}],
+['D','放棄避難點，直接前往實驗室','節省時間，但失去所有額外情報與可能的倖存者支援。','event04',{survivors:-1,trust:-1,alertDelta:1,flags:{避難點被放棄:true},note:'你離開避難點，身後的求救聲逐漸消失。'}]]},
+event21:{chapter:'第二章｜失落的研究紀錄',title:'事件 08｜觀測站的封存層',text:'你進入觀測站下層，發現備份主機分成兩個區域：一邊保存實驗對象資料，另一邊保存研究人員的私人紀錄。供電系統不穩，最多只能完整啟動其中一組設備。',quote:'「系統警告：備份槽即將永久離線。」',choices:[
+['A','優先備份實驗對象資料','取得完整研究備份，確認 07 號實驗對象的身分。','event08',{add:['完整研究備份','實驗對象 07 完整檔案'],flags:{封存層實驗資料:true},father:1}],
+['B','優先備份父親私人檔案','取得父親私人紀錄，但會失去部分研究備份。','event08',{add:['父親私人紀錄','父親私人檔案'],remove:['完整研究備份'],flags:{封存層私人資料:true},father:1}],
+['C','分流電力，同時備份兩側','需要電子零件；若沒有，設備短路並造成警報。','event08',{requires:['電子零件'],consume:['電子零件'],add:['完整研究備份','父親私人紀錄'],flags:{雙重備份成功:true},note:'你分流電力，成功保存兩側資料。',fallback:{add:['不完整研究備份'],alertDelta:3,flags:{封存層短路:true},note:'缺少電子零件，電力分流失敗，備份槽短路並引發警報。'}}],
+['D','直接拔除主電源','阻止 ECHO 取得資料，但所有未完成備份都會損毀。','event08',{remove:['完整研究備份','父親私人檔案','父親私人紀錄'],alertDelta:2,flags:{封存層資料損毀:true},note:'你切斷主電源，阻止資料外流，但備份也一併損毀。'}]]},
+event22:{chapter:'第三章｜異常的倖存者',title:'事件 11｜失控的追蹤訊號',text:'你沿著訊號追蹤到一處廢棄轉運站。這裡有多個宿主留下的意識殘響，卻也有一台仍可運作的訊號分析器。你必須在回聲體合圍前決定如何處理。',quote:'「訊號不是從他們身上發出來的……他們只是被迫轉送。」',choices:[
+['A','啟動分析器追蹤源頭','取得 ECHO 連結節點資料。','event11',{add:['ECHO 連結節點資料'],flags:{轉運站訊號分析:true},father:1}],
+['B','救出被困的研究助理','需要研究員口述密碼或通訊模組；成功可取得研究員證詞。','event11',{requiresAny:['研究員口述密碼','通訊模組'],add:['研究員證詞'],survivors:1,trust:2,flags:{研究助理獲救:true},note:'研究助理獲救，交出研究員證詞。',fallback:{survivors:-1,trust:-2,alertDelta:2,flags:{研究助理死亡:true},note:'缺少可用通訊或驗證工具，救援失敗，研究助理死亡。'}}],
+['C','摧毀訊號轉送器','阻止附近宿主繼續被控制，但失去分析器資料。','event11',{remove:['ECHO 連結節點資料'],alertDelta:1,flags:{轉送器摧毀:true},note:'轉送器遭到摧毀，附近宿主暫時恢復，但研究資料也消失。'}],
+['D','偽裝成宿主接近訊號源','可取得核心座標，但意識會遭到污染。','event11',{add:['核心區座標'],alertDelta:3,flags:{偽裝宿主:true},note:'你成功接近訊號源，但 ECHO 已經辨識你的意識。'}]]},
+event23:{chapter:'第五章｜ECHO 的真相',title:'事件 15｜感染區的撤離決策',text:'中繼站外的感染區突然失去穩定器保護。數十名居民被困在地下避難所，另一側則是通往核心區的唯一道路。你只能先處理其中一邊。',quote:'「如果你現在離開，我們就再也等不到救援了。」',choices:[
+['A','留下組織居民撤離','救出大量居民，取得信任，但核心區入口將被回聲體封鎖。','event15',{survivors:3,trust:2,alertDelta:2,flags:{感染區居民撤離:true,核心區入口受阻:true},note:'居民成功撤離，但你必須付出更高代價才能進入核心區。'}],
+['B','啟動舊型穩定器保護避難所','需要穩定器核心；若沒有，設備過載並造成傷亡。','event15',{requires:['穩定器核心'],survivors:2,trust:2,alertDelta:-1,flags:{避難所穩定:true},note:'穩定器恢復運作，避難所居民獲救。',fallback:{survivors:-2,trust:-2,alertDelta:3,flags:{避難所過載:true},note:'缺少穩定器核心，設備過載，避難所多人傷亡。'}}],
+['C','優先突破核心區入口','保留調查進度，但放棄避難所居民。','event15',{survivors:-2,trust:-3,alertDelta:1,flags:{避難所被放棄:true},note:'你突破入口，避難所居民卻未能等到救援。'}],
+['D','分派倖存者自行撤離','嘗試讓居民互助撤離，但組織不足會導致傷亡。','event15',{trust:1,survivors:1,flags:{居民自行撤離:true},note:'居民自行撤離，仍有部分人失散。',fallback:{survivors:-2,trust:-2,alertDelta:2,flags:{撤離失敗:true},note:'撤離缺乏組織，居民發生踩踏與失散。'}}]]},
+event24:{chapter:'第六章｜父親的另一面',title:'事件 18｜核心前的最後通訊',text:'在進入終末核心前，你收到安全區最後一段通訊。倖存者要求你帶回能證明父親真相的資料，也有人要求你無論如何都要阻止永恆計畫。通訊逐漸失真，你必須決定最後的準備方向。',quote:'「我們不知道你會帶回什麼，但希望你還能自己作出選擇。」',choices:[
+['A','回傳研究資料穩定安全區','需要完整研究備份或 ECHO 連結架構；可取得最後補給。','event18',{requiresAny:['完整研究備份','ECHO 連結架構'],add:['核心防護密鑰'],trust:2,flags:{安全區取得資料:true},note:'安全區收到研究資料，提供核心防護密鑰。',fallback:{trust:-1,alertDelta:2,flags:{資料回傳失敗:true},note:'缺少完整資料，通訊中斷，安全區無法提供支援。'}}],
+['B','回傳父親私人紀錄','需要父親私人紀錄；安全區協助整理父親的最後訊息。','event18',{requires:['父親私人紀錄'],add:['父親記憶資料'],trust:1,flags:{父親紀錄已回傳:true},note:'安全區從私人紀錄中還原一段父親記憶。',fallback:{trust:-1,alertDelta:1,flags:{父親紀錄回傳失敗:true},note:'缺少父親私人紀錄，無法還原最後訊息。'}}],
+['C','切斷通訊避免 ECHO 追蹤','保護安全區位置，但失去最後補給與居民支援。','event18',{trust:-2,remove:['安全區通行權'],alertDelta:1,flags:{最後通訊切斷:true},note:'你切斷通訊，避免位置外洩，但安全區無法再提供支援。'}],
+['D','要求安全區引爆外圍防線','爭取進入核心區的時間，但會造成重大傷亡。','event18',{survivors:-2,trust:-3,alertDelta:2,flags:{外圍防線引爆:true},note:'外圍防線被引爆，爭取到時間，但安全區付出重大傷亡。'}]]},
 event19:{chapter:'第七章｜最後的選擇',title:'事件 19｜最後的抉擇',text:'核心開始崩解。你只剩下最後一次機會。眼前有四種可能：摧毀核心、接受永恆、改寫核心，或找回父親最後的人性。某些方法需要你在旅途中取得的關鍵物品與記憶。',choices:[]}
 };
 const missions=[
-{id:'m1',unlock:2,title:'額外任務｜失聯的巡守員',desc:'安全區有一名巡守員在外圍失聯。',text:'你在廢棄道路找到巡守員留下的求救標記。附近有回聲體徘徊，你必須決定如何接近。',choices:[['A','沿著標記直接搜尋','找到受傷巡守員，取得醫療補給。',{add:['醫療包'],survivors:1,trust:1}],['B','先從高處觀察動向','避開巡守員附近的危險，取得巡守路線圖。',{add:['巡守路線圖'],trust:1}],['C','優先拆取巡守員的通訊設備','取得通訊模組，但無法確認巡守員下落。',{add:['通訊模組']}]]},
-{id:'m2',unlock:7,title:'支線任務｜安全區的發電機',desc:'安全區電力不足，穩定器即將停止運作。',text:'發電機的能源轉換模組損壞。若能修復，安全區將提供核心區的支援。',choices:[['A','使用電子零件修復','需要電子零件。若沒有，修復失敗，必須繞路尋找備用模組。',{requires:['電子零件'],consume:['電子零件'],add:['能源轉換模組'],trust:2,flags:{發電機修復:true},alertDelta:-2,note:'消耗電子零件修復發電機，安全區恢復供電。',fallback:{add:['發電機故障紀錄'],flags:{修復失敗需繞路:true},alertDelta:1,note:'缺少電子零件，無法修復發電機。你記下故障位置，必須改走備用能源路線。'}}],['B','尋找備用能源模組','耗費時間繞路，但仍可取得能源轉換模組。',{add:['能源轉換模組'],flags:{繞路取得能源:true}}],['C','放棄修復，記錄故障原因','取得故障紀錄，之後可作為研究資料。',{add:['發電機故障紀錄'] }]]},
-{id:'m3',unlock:8,title:'支線任務｜研究員的最後留言',desc:'破解一段隱藏在觀測站備份中的錄音。',text:'錄音裡的研究員提到父親曾留下私人檔案，並把一段記憶備份藏在研究室的離線資料槽。',choices:[['A','追查離線資料槽','不必進入父親的記憶事件，也能從研究員留下的離線備份取得父親私人紀錄與記憶資料，作為替代路線。',{add:['父親私人紀錄','父親記憶資料'],flags:{父親記憶備份:true,替代回憶路線:true}}],['B','只複製研究員的口述','取得研究員證詞，避免長時間連線。',{add:['研究員證詞']}],['C','刪除錄音避免追蹤','不留下連線痕跡，但失去父親線索。',{flags:{刪除研究員錄音:true}}]]},
-{id:'m4',unlock:11,title:'額外任務｜回聲體樣本',desc:'取得一份尚未完全失活的異常意識樣本。',text:'一具回聲體被困在舊實驗艙中。它的意識訊號仍在活動，或許能用來分析 ECHO 的連結。',choices:[['A','使用穩定器隔離樣本','需要穩定器核心。若沒有，只能冒險接觸樣本，警覺度會上升。',{requires:['穩定器核心'],add:['ECHO 意識樣本'],flags:{取得ECHO樣本:true},note:'穩定器隔離成功，取得完整 ECHO 意識樣本。',fallback:{add:['破碎 ECHO 樣本'],flags:{破碎樣本:true},alertDelta:2,note:'缺少穩定器核心，你冒險接觸樣本，受到意識反噬，只取得破碎樣本。'}}],['B','遠端掃描並複製訊號','取得不完整樣本，但不必接近實驗艙。',{add:['破碎 ECHO 樣本'],flags:{破碎樣本:true}}],['C','摧毀實驗艙','阻止樣本擴散，卻失去研究機會。',{flags:{摧毀樣本艙:true}}],['D','利用能源轉換模組製作臨時穩定器核心','需要能源轉換模組與穩定器頻率紀錄；消耗模組，製作可供核心改寫使用的臨時核心。',{requires:['能源轉換模組','穩定器頻率紀錄'],consume:['能源轉換模組'],add:['臨時穩定器核心','破碎 ECHO 樣本'],flags:{製作臨時穩定器:true,破碎樣本:true},note:'你用能源轉換模組重建穩定頻率，製作出臨時穩定器核心，同時穩定樣本艙，取得破碎 ECHO 意識樣本。',fallback:{flags:{臨時穩定器製作失敗:true},retryable:true,note:'缺少能源轉換模組或頻率紀錄，暫時無法製作臨時穩定器核心。取得材料後可以再試。'}}]]},
-{id:'m5',unlock:14,title:'支線任務｜核心重寫技術',desc:'尋找能保留個體意識的核心改寫方法。',text:'舊研究資料庫裡藏著一份未完成的核心重寫程式。它可能切斷 ECHO 的控制，卻不抹除每個人的獨立意識。',choices:[['A','用完整研究備份解鎖','需要完整研究備份。若沒有，無法使用這條解鎖方式。',{requires:['完整研究備份'],add:['核心重寫技術'],flags:{取得重寫技術:true},note:'完整研究備份解鎖核心重寫技術。',fallback:{flags:{重寫資料不足:true},retryable:true,note:'缺少完整研究備份，資料庫拒絕授權。任務尚未完成；取得研究員證詞後可再次嘗試，或選擇手動重建。'}}],['B','以研究員證詞交叉驗證','需要研究員證詞。若沒有，無法確認程式的安全性。',{requires:['研究員證詞'],add:['核心重寫技術'],flags:{取得重寫技術:true},note:'研究員證詞補足程式缺口，取得核心重寫技術。',fallback:{flags:{缺少研究員證詞:true},retryable:true,note:'缺少研究員證詞，無法確認程式安全性。任務尚未完成；取得完整研究備份後可再次嘗試，或選擇手動重建。'}}],['C','手動重建程式','即使沒有完整資料，也能取得技術，但會留下不穩定缺陷。',{add:['不穩定核心重寫技術'],flags:{取得不穩定技術:true}}]]},
-{id:'m6',unlock:13,title:'額外任務｜安全區防線',desc:'協助居民守住最後一道防線。',text:'回聲體正在逼近安全區外牆。居民需要你協助重新啟動防禦設備，並帶領傷者撤離。',choices:[['A','留下協助防守','成功守住安全區，取得居民信任與支援，也能降低警覺度。',{trust:2,survivors:1,flags:{守住安全區:true},alertDelta:-2}],['B','帶領居民撤離','救出更多人，但安全區將被迫放棄。',{trust:1,survivors:2,flags:{居民撤離:true}}],['C','啟動警報引開回聲體','降低眼前威脅，取得一份異常訊號紀錄。',{add:['異常訊號紀錄'],flags:{引開回聲體:true}}]]}
+{id:'m1',unlock:2,title:'額外任務｜失聯的巡守員',desc:'目標：找回巡守員或取得巡守路線。失敗代價：可能失去巡守員支援。',text:'你在廢棄道路找到巡守員留下的求救標記。附近有回聲體徘徊，你必須決定如何接近。',choices:[['A','沿著標記直接搜尋','找到受傷巡守員，取得醫療補給。',{add:['醫療包'],survivors:1,trust:1}],['B','先從高處觀察動向','避開巡守員附近的危險，取得巡守路線圖。',{add:['巡守路線圖'],trust:1}],['C','優先拆取巡守員的通訊設備','取得通訊模組，但無法確認巡守員下落。',{add:['通訊模組']}]]},
+{id:'m2',unlock:7,title:'支線任務｜安全區的發電機',desc:'目標：修復發電機並取得能源轉換模組。失敗代價：安全區供電惡化，需繞路尋找備用能源。',text:'發電機的能源轉換模組損壞。若能修復，安全區將提供核心區的支援。',choices:[['A','使用電子零件修復','需要電子零件。若沒有，修復失敗，必須繞路尋找備用模組。',{requires:['電子零件'],consume:['電子零件'],add:['能源轉換模組'],trust:2,flags:{發電機修復:true},alertDelta:-2,note:'消耗電子零件修復發電機，安全區恢復供電。',fallback:{add:['發電機故障紀錄'],flags:{修復失敗需繞路:true},alertDelta:1,note:'缺少電子零件，無法修復發電機。你記下故障位置，必須改走備用能源路線。'}}],['B','尋找備用能源模組','耗費時間繞路，但仍可取得能源轉換模組。',{add:['能源轉換模組'],flags:{繞路取得能源:true}}],['C','放棄修復，記錄故障原因','取得故障紀錄，之後可作為研究資料。',{add:['發電機故障紀錄'] }]]},
+{id:'m3',unlock:10,title:'支線任務｜研究員的最後留言',desc:'目標：取得父親私人紀錄與記憶備份，或取得研究員證詞。失敗代價：失去替代回憶路線。',text:'錄音裡的研究員提到父親曾留下私人檔案，並把一段記憶備份藏在研究室的離線資料槽。',choices:[['A','追查離線資料槽','不必進入父親的記憶事件，也能從研究員留下的離線備份取得父親私人紀錄與記憶資料，作為替代路線。',{add:['父親私人紀錄','父親記憶資料'],flags:{父親記憶備份:true,替代回憶路線:true}}],['B','只複製研究員的口述','取得研究員證詞，避免長時間連線。',{add:['研究員證詞']}],['C','刪除錄音避免追蹤','不留下連線痕跡，但失去父親線索。',{flags:{刪除研究員錄音:true}}]]},
+{id:'m4',unlock:14,title:'額外任務｜回聲體樣本',desc:'目標：取得 ECHO 樣本。失敗代價：警覺度上升、樣本破碎；可用替代材料製作臨時核心。',text:'一具回聲體被困在舊實驗艙中。它的意識訊號仍在活動，或許能用來分析 ECHO 的連結。',choices:[['A','使用穩定器隔離樣本','需要穩定器核心。若沒有，只能冒險接觸樣本，警覺度會上升。',{requires:['穩定器核心'],add:['ECHO 意識樣本'],flags:{取得ECHO樣本:true},note:'穩定器隔離成功，取得完整 ECHO 意識樣本。',fallback:{add:['破碎 ECHO 樣本'],flags:{破碎樣本:true},alertDelta:2,note:'缺少穩定器核心，你冒險接觸樣本，受到意識反噬，只取得破碎樣本。'}}],['B','遠端掃描並複製訊號','取得不完整樣本，但不必接近實驗艙。',{add:['破碎 ECHO 樣本'],flags:{破碎樣本:true}}],['C','摧毀實驗艙','阻止樣本擴散，卻失去研究機會。',{flags:{摧毀樣本艙:true}}],['D','利用能源轉換模組製作臨時穩定器核心','需要能源轉換模組與穩定器頻率紀錄；消耗模組，製作可供核心改寫使用的臨時核心。',{requires:['能源轉換模組','穩定器頻率紀錄'],consume:['能源轉換模組'],add:['臨時穩定器核心','破碎 ECHO 樣本'],flags:{製作臨時穩定器:true,破碎樣本:true},note:'你用能源轉換模組重建穩定頻率，製作出臨時穩定器核心，同時穩定樣本艙，取得破碎 ECHO 意識樣本。',fallback:{flags:{臨時穩定器製作失敗:true},retryable:true,note:'缺少能源轉換模組或頻率紀錄，暫時無法製作臨時穩定器核心。取得材料後可以再試。'}}]]},
+{id:'m5',unlock:19,title:'支線任務｜核心重寫技術',desc:'目標：取得核心重寫技術。失敗代價：缺少完整資料會無法解鎖穩定技術；可手動重建但結局品質下降。',text:'舊研究資料庫裡藏著一份未完成的核心重寫程式。它可能切斷 ECHO 的控制，卻不抹除每個人的獨立意識。',choices:[['A','用完整研究備份解鎖','需要完整研究備份。若沒有，無法使用這條解鎖方式。',{requires:['完整研究備份'],add:['核心重寫技術'],flags:{取得重寫技術:true},note:'完整研究備份解鎖核心重寫技術。',fallback:{flags:{重寫資料不足:true},retryable:true,note:'缺少完整研究備份，資料庫拒絕授權。任務尚未完成；取得研究員證詞後可再次嘗試，或選擇手動重建。'}}],['B','以研究員證詞交叉驗證','需要研究員證詞。若沒有，無法確認程式的安全性。',{requires:['研究員證詞'],add:['核心重寫技術'],flags:{取得重寫技術:true},note:'研究員證詞補足程式缺口，取得核心重寫技術。',fallback:{flags:{缺少研究員證詞:true},retryable:true,note:'缺少研究員證詞，無法確認程式安全性。任務尚未完成；取得完整研究備份後可再次嘗試，或選擇手動重建。'}}],['C','手動重建程式','即使沒有完整資料，也能取得技術，但會留下不穩定缺陷。',{add:['不穩定核心重寫技術'],flags:{取得不穩定技術:true}}]]},
+{id:'m6',unlock:16,title:'額外任務｜安全區防線',desc:'目標：守住安全區或撤離居民。失敗代價：居民傷亡、信任下降，後續支援減少。',text:'回聲體正在逼近安全區外牆。居民需要你協助重新啟動防禦設備，並帶領傷者撤離。',choices:[['A','留下協助防守','成功守住安全區，取得居民信任與支援，也能降低警覺度。',{trust:2,survivors:1,flags:{守住安全區:true},alertDelta:-2}],['B','帶領居民撤離','救出更多人，但安全區將被迫放棄。',{trust:1,survivors:2,flags:{居民撤離:true}}],['C','啟動警報引開回聲體','降低眼前威脅，取得一份異常訊號紀錄。',{add:['異常訊號紀錄'],flags:{引開回聲體:true}}]]}
 ];
 function has(x){return S.items.includes(x)}
 function addUnique(x){if(x&&!has(x))S.items.push(x)}
-function apply(e){if(!e)return;if(e.consume)(Array.isArray(e.consume)?e.consume:[e.consume]).forEach(x=>{const i=S.items.indexOf(x);if(i>=0)S.items.splice(i,1)});if(e.add)(Array.isArray(e.add)?e.add:[e.add]).forEach(addUnique);if(e.remove)S.items=S.items.filter(x=>!e.remove.includes(x));if(e.flags)Object.keys(e.flags).forEach(k=>S.flags[k]=e.flags[k]);if(e.survivors)S.survivors+=e.survivors;if(e.trust)S.trust+=e.trust;if(e.father)S.fatherPath+=e.father;if(e.humanity)S.humanityPath+=e.humanity}
+function apply(e){if(!e)return;if(e.consume)(Array.isArray(e.consume)?e.consume:[e.consume]).forEach(x=>{const i=S.items.indexOf(x);if(i>=0)S.items.splice(i,1)});if(e.add)(Array.isArray(e.add)?e.add:[e.add]).forEach(addUnique);if(e.remove)S.items=S.items.filter(x=>!e.remove.includes(x));if(e.flags)Object.keys(e.flags).forEach(k=>S.flags[k]=e.flags[k]);if(e.survivors)S.survivors=Math.max(0,S.survivors+e.survivors);if(e.trust)S.trust+=e.trust;if(e.father)S.fatherPath+=e.father;if(e.humanity)S.humanityPath+=e.humanity}
 function save(){localStorage.setItem(KEY,JSON.stringify(S));$('saveStatus').textContent='已儲存';}
 function load(){try{const x=JSON.parse(localStorage.getItem(KEY));if(x&&x.stage&&x.alert!==undefined){S=x;return true}}catch(e){}return false}
 function begin(){ $('startPanel').classList.add('hidden');$('game').classList.remove('hidden');render();}
@@ -171,7 +197,7 @@ const ev=events[S.stage];$('chapter').textContent=ev.chapter;$('eventTitle').tex
 if(S.stage==='event19'){renderEndChoices();return}
 ev.choices.forEach((c,i)=>{const b=document.createElement('button');b.className='choice';b.innerHTML='<b>'+c[0]+'</b>'+esc(c[1])+'<span>'+esc(c[2])+'</span>';b.onclick=()=>choose(i);$('choices').appendChild(b)});
 }
-function objectiveForStage(stage){const map={event01:'主要：確認地下求救訊號來源。\n額外：調查翻覆運輸車，可能取得電子零件。',event02:'主要：進入地下維修站並救出求救者。\n注意：強行突破較快，但可能驚動回聲體。',event03:'主要：取得研究員留下的情報。\n額外：護送倖存者可增加後續支援。',event04:'主要：進入封存實驗室。\n條件：通行卡或研究員密碼可降低風險；缺少時仍可破解，但會增加警覺度。',event05:'主要：保存研究資料並尋找父親留下的影像。',event06:'主要：修復或分析影像，取得觀測站座標。\n條件：電子零件可修復完整影像；缺少時只能取得模糊座標。',event07:'主要：取得觀測站研究備份。\n額外：口述密碼可降低入侵風險。',event08:'主要：確認實驗對象 07 的身分。\n額外：父親私人檔案可能影響隱藏結局。',event09:'主要：追查童年記憶的來源。',event10:'主要：判斷研究制服人影的身分。\n注意：接觸可取得座標，觀察可取得訊號樣本。',event11:'主要：切斷或追蹤 ECHO 的意識連結。\n條件：穩定器核心可安全干擾；缺少時會承受反噬。',event12:'主要：取得穩定器技術或核心。\n注意：修復可保留安全區防護，拆走則會削弱防線。',event13:'主要：決定是否協助安全區。\n額外：研究備份可交換通行權，穩定器核心可降低風險。',event14:'主要：查明 ECHO 的集體連結方式。\n額外：意識樣本與連結架構可能影響特殊結局。',event15:'主要：理解永恆計畫並尋找替代方案。\n額外：核心重寫線索可協助解鎖重生結局。',event16:'主要：理解父親當年的實驗。\n額外：父親記憶資料是特殊結局的重要條件。',event17:'主要：面對 ECHO，決定如何回應父親。',event18:'主要：確認終末核心狀態。\n準備：檢查核心、尋找記憶備份，或直接準備終止程序。',event19:'最終：依照已取得的物品、記憶與支線成果，選擇可行結局。'};return map[stage]||(stage==='memory'?'特殊目標：決定是否接受父親留下的記憶。':stage==='failed'?'調查失敗：重新開始，嘗試不同資源配置與路線。':'完成目前事件，留意物品與支線帶來的後續影響。')}
+function objectiveForStage(stage){const map={event01:'主要：確認地下求救訊號來源。\n額外：調查翻覆運輸車，可能取得電子零件。',event02:'主要：進入地下維修站並救出求救者。\n注意：強行突破較快，但可能驚動回聲體。',event03:'主要：取得研究員留下的情報。\n額外：護送倖存者可增加後續支援。',event04:'主要：進入封存實驗室。\n條件：通行卡或研究員密碼可降低風險；缺少時仍可破解，但會增加警覺度。',event05:'主要：保存研究資料並尋找父親留下的影像。',event06:'主要：修復或分析影像，取得觀測站座標。\n條件：電子零件可修復完整影像；缺少時只能取得模糊座標。',event07:'主要：取得觀測站研究備份。\n額外：口述密碼可降低入侵風險。',event08:'主要：確認實驗對象 07 的身分。\n額外：父親私人檔案可能影響隱藏結局。',event09:'主要：追查童年記憶的來源。',event10:'主要：判斷研究制服人影的身分。\n注意：接觸可取得座標，觀察可取得訊號樣本。',event11:'主要：切斷或追蹤 ECHO 的意識連結。\n條件：穩定器核心可安全干擾；缺少時會承受反噬。',event12:'主要：取得穩定器技術或核心。\n注意：修復可保留安全區防護，拆走則會削弱防線。',event13:'主要：決定是否協助安全區。\n額外：研究備份可交換通行權，穩定器核心可降低風險。',event14:'主要：查明 ECHO 的集體連結方式。\n額外：意識樣本與連結架構可能影響特殊結局。',event15:'主要：理解永恆計畫並尋找替代方案。\n額外：核心重寫線索可協助解鎖重生結局。',event16:'主要：理解父親當年的實驗。\n額外：父親記憶資料是特殊結局的重要條件。',event17:'主要：面對 ECHO，決定如何回應父親。',event18:'主要：確認終末核心狀態。\n準備：檢查核心、尋找記憶備份，或直接準備終止程序。',event20:'主要：處理避難點傷患。\n風險：缺少醫療包可能造成傷患死亡。',event21:'主要：選擇要保存的封存資料。\n風險：備份槽短路會損毀資料並提高警覺度。',event22:'主要：追蹤 ECHO 訊號或救出研究助理。\n風險：救援工具不足可能造成研究助理死亡。',event23:'主要：決定感染區居民與核心區的優先順序。\n風險：撤離失敗可能造成多人傷亡，核心入口也可能受阻。',event24:'主要：完成進入核心前的最後通訊。\n風險：失去安全區支援會提高最終行動難度。',event19:'最終：依照已取得的物品、記憶與支線成果，選擇可行結局。'};return map[stage]||(stage==='memory'?'特殊目標：決定是否接受父親留下的記憶。':stage==='failed'?'調查失敗：重新開始，嘗試不同資源配置與路線。':'完成目前事件，留意物品與支線帶來的後續影響。')}
 function showMemory(){$('chapter').textContent='隱藏支線｜父親的記憶';$('eventTitle').textContent='特殊事件｜想起父親的故事？';$('plotText').textContent='你一直追尋父親失蹤的真相，但這段記憶提醒你：在成為調查員之前，你也曾是那個需要父親保護的孩子。這段回憶可能改變你最後面對 ECHO 的方式。';$('story').textContent='你的意識逐漸崩潰。就在視線模糊之際，一段溫暖的記憶將你拉住。你看見年幼的自己與父親站在研究室窗前。';$('quote').textContent='「不管發生什麼事，都要記得自己是誰。」';$('quote').classList.remove('hidden');$('choices').innerHTML='';[['A','接受父親留下的記憶','警覺度降至 7，取得父親的牽掛。'],['B','告訴父親你已經長大','警覺度降至 9，保留自己的意志。'],['C','拒絕這段記憶','警覺度降至 9，不取得記憶線索。']].forEach((o,i)=>{const b=document.createElement('button');b.className='choice';b.innerHTML='<b>'+o[0]+'</b>'+o[1]+'<span>'+o[2]+'</span>';b.onclick=()=>memoryChoice(i);$('choices').appendChild(b)})}
 function renderEndChoices(){const hasSample=has('ECHO 意識樣本')||has('破碎 ECHO 樣本');const hasStableCore=has('穩定器核心')||has('臨時穩定器核心');const req3=(has('核心重寫技術')||has('不穩定核心重寫技術'))&&hasStableCore&&hasSample;const req4=has('父親記憶資料')&&has('父親私人紀錄')&&hasSample;const missing3=[];if(!has('核心重寫技術')&&!has('不穩定核心重寫技術'))missing3.push('核心重寫技術');if(!hasStableCore)missing3.push('穩定器核心（或臨時穩定器核心）');if(!hasSample)missing3.push('ECHO 意識樣本');const missing4=[];if(!has('父親記憶資料'))missing4.push('父親記憶資料');if(!has('父親私人紀錄'))missing4.push('父親私人紀錄');if(!hasSample)missing4.push('ECHO 意識樣本');const opts=[
 ['A','終結｜摧毀終末核心','摧毀核心，讓擴散停止。父親的意識也將隨之消失。',true,'destroy'],
@@ -187,8 +213,8 @@ rewrite:['重生','你使用核心重寫技術，將 ECHO 的集體連結改寫�
 echo:['最後的回聲','你將父親的記憶資料與 ECHO 意識樣本同步。那些被遺忘的片段終於回到他身上。父親短暫恢復了自我，明白自己曾經做過的一切。他選擇以最後的意識切斷終末核心，讓所有人回到自己的生命。訊號消失前，你聽見他最後一次呼喚你的名字。']
 };const e=endings[type];S.ending=type;S.ended=true;S.lastResult=e[1];record('結局｜'+e[0]);save();render()}
 function showEnding(){$('chapter').textContent='故事結局';$('eventTitle').textContent='結局｜'+({destroy:'終結',eternal:'永恆',rewrite:'重生',echo:'最後的回聲'}[S.ending]);$('plotText').textContent='這是你一路以來的選擇所導向的結果。父親、倖存者與整個世界的命運，已經因你的決定而改變。';$('story').textContent=S.lastResult;$('quote').classList.add('hidden');$('choices').innerHTML='<div class="ending">THE END</div><button class="choice" onclick="restart()">重新開始，體驗其他結局</button>'}
-function openMissions(){const modal=$('modal');$('modalEyebrow').textContent='OPTIONAL OPERATIONS';$('modalTitle').textContent='支線任務與額外調查';$('modalText').textContent='支線任務不會改變主線必經順序，但能補足主線錯過的物品與情報，也能提供特殊結局的替代解鎖路線。部分任務可在取得材料後再次嘗試。';const box=$('modalChoices');box.innerHTML='';missions.forEach(m=>{const unlocked=stageNumber()>=m.unlock;const done=!!S.missions[m.id];const b=document.createElement('button');b.className='mission';b.disabled=!unlocked||done||S.ended;b.innerHTML='<b>'+esc(m.title)+(done?'<span class="tag">已完成</span>':!unlocked?'<span class="tag">尚未解鎖</span>':'')+'</b><small>'+esc(m.desc)+'</small>';b.onclick=()=>openMission(m);box.appendChild(b)});modal.classList.remove('hidden')}
-function stageNumber(){if(S.stage==='memory')return 9;const n=(S.stage.match(/event(\d+)/)||[])[1];return n?Number(n):99}
+function openMissions(){const modal=$('modal');$('modalEyebrow').textContent='OPTIONAL OPERATIONS';$('modalTitle').textContent='支線任務與額外調查';$('modalText').textContent='每項任務都有明確目標、需求與代價。成功可取得主線替代線索或結局材料；失敗可能造成倖存者死亡、信任下降、物資損失、警覺度暴增或永久失去某條捷徑。標示可重試的任務可在補足材料後再試，其餘失敗後果會保留。';const box=$('modalChoices');box.innerHTML='';missions.forEach(m=>{const unlocked=stageNumber()>=m.unlock;const done=!!S.missions[m.id];const b=document.createElement('button');b.className='mission';b.disabled=!unlocked||done||S.ended;b.innerHTML='<b>'+esc(m.title)+(done?'<span class="tag">已完成</span>':!unlocked?'<span class="tag">尚未解鎖</span>':'')+'</b><small>'+esc(m.desc)+'</small>';b.onclick=()=>openMission(m);box.appendChild(b)});modal.classList.remove('hidden')}
+function stageNumber(){if(S.stage==='memory')return 12;const ranks={event01:1,event02:2,event03:3,event20:4,event04:5,event05:6,event06:7,event07:8,event21:9,event08:10,event09:11,event10:12,event22:13,event11:14,event12:15,event13:16,event14:17,event23:18,event15:19,event16:20,event17:21,event24:22,event18:23,event19:24};return ranks[S.stage]||99}
 function openMission(m){$('modalEyebrow').textContent='SIDE OPERATION';$('modalTitle').textContent=m.title;$('modalText').textContent=m.text;const box=$('modalChoices');box.innerHTML='';m.choices.forEach((c,i)=>{const b=document.createElement('button');b.className='choice';b.innerHTML='<b>'+c[0]+'</b>'+esc(c[1])+'<span>'+esc(c[2])+'</span>';b.onclick=()=>completeMission(m,c);box.appendChild(b)})}
 function completeMission(m,c){let effect=c[3]||{};const success=requirementsMet(effect);if(!success&&effect.fallback)effect=effect.fallback;apply(effect);if(!effect.retryable)S.missions[m.id]=true;S.alert+=1;if(effect.alertDelta)S.alert=Math.max(0,S.alert+effect.alertDelta);const got=effect.add?(Array.isArray(effect.add)?effect.add:[effect.add]):[];S.lastResult=m.title+'：'+c[1]+'。\n'+(effect.note||c[2])+(got.length?'\n取得：'+got.join('、'):'')+(effect.consume?'\n消耗：'+(Array.isArray(effect.consume)?effect.consume.join('、'):effect.consume):'');record(m.title+'｜'+c[0]+' '+c[1]+(success?'':'（條件不足，採取替代方案）'));$('modal').classList.add('hidden');afterAction();save();render()}
 function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
