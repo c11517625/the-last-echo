@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#111820">
+<title>最後的回聲｜The Last Echo</title>
+<style>
+:root{--bg:#0d141b;--panel:#151f29;--panel2:#1b2935;--line:#30404d;--text:#e8edf0;--muted:#9aabb6;--accent:#d5a45b;--danger:#d56e68;--good:#7db39a}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at top,#1a2935 0,#0d141b 55%);color:var(--text);font:16px/1.65 system-ui,-apple-system,"Noto Sans TC",sans-serif;min-height:100vh}
+button{font:inherit;cursor:pointer}.wrap{max-width:980px;margin:auto;padding:20px 16px 48px}.top{display:flex;justify-content:space-between;align-items:center;gap:12px;border-bottom:1px solid var(--line);padding:8px 0 18px}.brand{font-size:13px;letter-spacing:.18em;color:var(--accent)}.top small{color:var(--muted)}h1{font-size:clamp(28px,5vw,46px);line-height:1.12;letter-spacing:.06em;margin:24px 0 6px}.subtitle{color:var(--muted);letter-spacing:.16em;font-size:12px}.intro{color:#bdc8ce;max-width:680px;margin:18px 0 22px}.layout{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(230px,.8fr);gap:16px;align-items:start}.panel{background:linear-gradient(160deg,rgba(27,41,53,.97),rgba(19,29,38,.97));border:1px solid var(--line);border-radius:16px;padding:20px;box-shadow:0 16px 42px #0003}.eyebrow{font-size:12px;letter-spacing:.14em;color:var(--accent);text-transform:uppercase}.event-title{font-size:23px;margin:5px 0 14px}.story{white-space:pre-line;color:#d5dee3;min-height:92px}.quote{border-left:2px solid var(--accent);padding:10px 14px;margin:16px 0;color:#e9d5b5;background:#d5a45b0d}.choices{display:grid;gap:10px;margin-top:20px}.choice{width:100%;text-align:left;background:#182530;border:1px solid #3b4d5b;color:var(--text);border-radius:12px;padding:13px 15px;transition:.15s}.choice:hover{border-color:var(--accent);background:#22313c;transform:translateY(-1px)}.choice b{color:var(--accent);margin-right:8px}.choice span{display:block;color:var(--muted);font-size:13px;margin:4px 0 0 27px}.side{display:grid;gap:14px}.stat{display:flex;justify-content:space-between;align-items:center}.number{font-size:25px;font-weight:700;font-variant-numeric:tabular-nums}.meter{height:9px;background:#0b1117;border-radius:99px;overflow:hidden;margin:10px 0 4px}.fill{height:100%;background:var(--accent);transition:width .25s}.fill.high{background:var(--danger)}.muted{color:var(--muted);font-size:13px}.list{display:grid;gap:8px;margin-top:10px}.item{display:flex;gap:9px;align-items:flex-start;padding:8px 9px;border-radius:9px;background:#0e1820;color:#dce4e8;font-size:14px}.item:before{content:"◇";color:var(--accent)}.empty{color:var(--muted);font-size:14px}.result{border:1px solid #8c744b66;background:#d5a45b0d;border-radius:12px;padding:13px 15px;margin-top:16px}.result strong{color:var(--accent);display:block;font-size:12px;letter-spacing:.12em;margin-bottom:4px}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:15px}.smallbtn{background:transparent;color:var(--muted);border:1px solid var(--line);border-radius:9px;padding:8px 11px;font-size:13px}.smallbtn:hover{color:var(--text);border-color:var(--accent)}.history{max-height:170px;overflow:auto;padding-left:18px;color:var(--muted);font-size:13px}.footer{text-align:center;color:#70818c;font-size:12px;margin-top:25px}.hidden{display:none!important}.ending{font-size:22px;color:var(--accent);margin:8px 0}.notice{padding:10px 12px;border:1px solid #7db39a55;background:#7db39a0c;border-radius:10px;color:#c5e2d2;font-size:13px;margin-top:12px}
+@media(max-width:720px){.wrap{padding:12px 12px 32px}.layout{grid-template-columns:1fr}.side{grid-template-columns:1fr 1fr}.side .wide{grid-column:1/-1}.panel{padding:16px}.event-title{font-size:21px}.top{align-items:flex-start}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top"><div><div class="brand">THE LAST ECHO</div><small>文字冒險・生存調查</small></div><small id="saveStatus">尚未開始</small></header>
+  <h1>最後的回聲</h1><div class="subtitle">THE LAST ECHO · 2087</div>
+  <p class="intro">終末現象吞噬記憶，也讓死者成為擴散異常的回聲體。你是一名災害調查員，正在追查失蹤父親留下的訊號。每個選擇都會留下代價。</p>
+  <div id="startPanel" class="panel">
+    <div class="eyebrow">存檔讀取</div><h2 class="event-title">準備好再次進入禁區了嗎？</h2>
+    <p class="story">這個版本會記錄你的警覺度、物品、選擇與劇情進度。你可以隨時關閉頁面，下次再從同一台裝置繼續。</p>
+    <div class="actions"><button class="choice" id="continueBtn">載入目前進度</button><button class="smallbtn" id="newBtn">重新開始</button></div>
+    <div class="muted" style="margin-top:12px">內建測試存檔：警覺度 8｜事件 08「實驗對象 07」</div>
+  </div>
+  <div id="game" class="layout hidden">
+    <main class="panel">
+      <div class="eyebrow" id="chapter">第二章｜失落的研究紀錄</div>
+      <h2 class="event-title" id="eventTitle"></h2>
+      <div class="story" id="story"></div>
+      <div class="quote hidden" id="quote"></div>
+      <div class="choices" id="choices"></div>
+      <div class="result hidden" id="result"><strong>行動結果</strong><div id="resultText"></div></div>
+      <div class="actions"><button class="smallbtn" id="saveBtn">儲存進度</button><button class="smallbtn" id="historyBtn">查看選擇紀錄</button><button class="smallbtn" id="resetBtn">重新開始</button></div>
+      <ol class="history hidden" id="history"></ol>
+    </main>
+    <aside class="side">
+      <section class="panel">
+        <div class="eyebrow">生存狀態</div>
+        <div class="stat"><span>警覺度</span><span class="number" id="alertNum">8 / 10</span></div>
+        <div class="meter"><div class="fill" id="alertFill" style="width:80%"></div></div>
+        <div class="muted" id="alertHint">異常正在接近。</div>
+      </section>
+      <section class="panel">
+        <div class="eyebrow">物品背包</div><div class="list" id="inventory"></div>
+      </section>
+      <section class="panel wide">
+        <div class="eyebrow">任務紀錄</div><div class="muted" id="taskText">調查觀測站，查明實驗對象 07 的真相。</div>
+        <div class="muted" style="margin-top:10px">倖存者：<b id="survivors">2</b> 人</div>
+      </section>
+    </aside>
+  </div>
+  <div class="footer">《最後的回聲》互動原型 · 單機存檔儲存在目前瀏覽器</div>
+</div>
+<script>
+const KEY='lastEchoSave_v1';
+const initial=()=>({alert:8,items:['地下通行卡','研究員口述密碼','實驗室通行紀錄','破損研究資料（部分修復）','父親的實驗座標','完整研究備份'],history:['救援倖存者','強行開門，救出兩人並取得地下通行卡','詢問已故研究員的詳細情報','使用地下通行卡進入實驗室','複製部分資料並撤離','修復破損影像','破解觀測站電子鎖'],survivors:2,stage:'event08',flags:{},lastResult:'目前存檔已載入。觀測站終端機仍然開著，你的實驗紀錄受到加密。',ended:false});
+let S=initial();
+const $=id=>document.getElementById(id);
+function save(){localStorage.setItem(KEY,JSON.stringify(S));$('saveStatus').textContent='已儲存';}
+function load(){try{const x=JSON.parse(localStorage.getItem(KEY));if(x&&x.alert!==undefined){S=x;return true}}catch(e){}return false}
+function showGame(){ $('startPanel').classList.add('hidden');$('game').classList.remove('hidden');render(); }
+const events={
+event08:{chapter:'第二章｜失落的研究紀錄',title:'事件 08｜實驗對象 07',story:'觀測站深處有一台尚未關閉的終端機。螢幕顯示，你的實驗紀錄仍然存在，但檔案受到加密。\\n\\n終端機旁還有一份未完成的訊息：「若實驗對象 07 回到這裡，請讓他知道……穩定器不是為了控制他。」',quote:'「他不是實驗品。他是我們最後的希望。」',opts:[['A','解密自己的實驗紀錄','查明自己為何能抵抗終末現象。','decrypt'],['B','搜尋父親的私人檔案','追查父親失蹤前真正的目的。','father'],['C','立即摧毀終端機','避免資料落入 ECHO 手中，但可能失去重要線索。','destroy']]},
+event09:{chapter:'第二章｜失落的研究紀錄',title:'事件 09｜記憶的裂縫',story:'終端機突然亮起。螢幕上出現一段不屬於你的童年影像：一個小男孩坐在研究室外，父親蹲下來替他繫好鞋帶。\\n\\n你從未記得這段往事，卻對那個聲音感到熟悉。',quote:'「如果你忘記了回家的路，就記得有人一直在等你。」',opts:[['A','追隨記憶中的聲音','嘗試定位影像來源。','memory'],['B','切斷終端機連線','避免異常訊號侵入意識。','disconnect'],['C','調查影像的時間戳記','比對父親研究紀錄，尋找真實性。','timestamp']]},
+event10:{chapter:'第三章｜異常的倖存者',title:'事件 10｜觀測站外的人影',story:'離開觀測站時，一名穿著舊研究制服的人站在遠處。他的臉孔模糊，卻準確喊出你的名字。\\n\\n「你終於來了。ECHO 已經知道你在這裡。」',opts:[['A','靠近並交談','可能取得核心區座標，也可能暴露位置。','talk'],['B','躲在掩體後觀察','先確認對方是否受到控制。','observe'],['C','立即撤離觀測站','避開未知接觸，但放棄眼前線索。','flee']]},
+event11:{chapter:'第三章｜異常的倖存者',title:'事件 11｜共享的記憶',story:'那人的聲音開始變化，幾個不同的聲音重疊在一起。他說出你童年時才知道的秘密。\\n\\n你意識到，眼前的人可能只是某個更大意識的出口。',opts:[['A','使用穩定器干擾連結','嘗試切斷控制訊號。','stabilize'],['B','追蹤訊號來源','沿著意識連結尋找控制節點。','trace'],['C','擊倒眼前的人','阻止他靠近，但可能失去情報。','attack']]},
+event12:{chapter:'第四章｜被遺忘的實驗',title:'事件 12｜穩定器核心',story:'你找到一座老舊的意識穩定器。核心仍在運作，但頻率不穩。研究紀錄指出，它能暫時切斷現象與人類意識的連結。',opts:[['A','修復穩定器核心','消耗研究資料，取得短暫抗性。','repair'],['B','拆下核心帶走','取得核心零件，但附近安全區的防護將減弱。','takecore'],['C','分析頻率並記錄','取得重寫核心所需的技術線索。','frequency']]}
+};
+function outcome(key){
+ const map={
+ decrypt:['你成功解開個人檔案。紀錄顯示你曾是意識穩定實驗的核心對象，父親親自批准了實驗。','實驗對象 07 完整檔案','event09'],
+ father:['私人檔案被加密，但你找到父親留下的語音片段。他曾試圖阻止某項名為「永恆計畫」的研究。','父親的語音片段','event09'],
+ destroy:['終端機冒出火花，資料被摧毀。你阻止了遠端連線，但失去了完整檔案。','燒毀的資料晶片','event09'],
+ memory:['你跟隨聲音找到一段隱藏記憶。記憶裡的父親正把一枚識別牌交給年幼的你。','父親的識別牌','event10'],
+ disconnect:['你切斷連線，避免訊號繼續侵入。終端機短暫黑屏，旁邊的備份槽彈出一張記憶卡。','觀測站記憶卡','event10'],
+ timestamp:['時間戳記顯示影像來自災變前一天。這不是 ECHO 偽造的即時幻象，而是真實記憶。','記憶時間戳記','event10'],
+ talk:['對方交出一組核心區座標，隨即倒下。他的眼睛短暫恢復清明，低聲說：「別讓他把所有人變成同一個人。」','核心區座標','event11'],
+ observe:['你確認對方受到 ECHO 控制。你記錄了他身上的訊號頻率，沒有驚動他。','異常訊號樣本','event11'],
+ flee:['你安全撤離，但身後傳來多個聲音同時呼喚你的名字。你失去直接情報，只能繞路尋找下一個訊號站。','撤離路線紀錄','event11'],
+ stabilize:['穩定器短暫發出反向頻率，控制者與宿主分離。你取得一小段仍在活動的意識樣本。','ECHO 意識樣本','event12'],
+ trace:['你沿訊號追到一處地下中繼站，記錄了集體意識的連結方式。','連結節點資料','event12'],
+ attack:['你擊倒了宿主，但訊號在他倒下前已經傳出。你只能從殘留設備讀取一份破碎座標。','破碎核心座標','event12'],
+ repair:['你修復了核心。穩定器重新啟動，讓你短時間抵抗意識侵蝕。','穩定器修復紀錄','ending'],
+ takecore:['你拆下核心。附近安全區的防護開始下降，但你取得了可攜式核心。','穩定器核心','ending'],
+ frequency:['你記錄完整頻率曲線，發現只要改寫核心，就可能切斷 ECHO 的控制而保留個體意識。','核心重寫技術','ending']
+ };
+ return map[key];
+}
+function choose(i){
+ if(S.ended)return;
+ const ev=events[S.stage];if(!ev)return;
+ const opt=ev.opts[i],key=opt[3];S.alert++;
+ const r=outcome(key);S.lastResult=r[0];S.items.push(r[1]);S.history.push(opt[0]+' '+opt[1]);
+ S.flags[key]=true;S.stage=r[2];
+ if(S.alert>=10){S.ended=true;S.stage='failed';S.lastResult+='\\n\\n警覺度達到 10，回聲體鎖定了你的意識。任務失敗。'}
+ else if(S.alert===9){S.stage='hidden';S.lastResult+='\\n\\n就在你準備離開時，一段熟悉的記憶突然浮現。';}
+ save();render();
+}
+function hiddenChoice(i){
+ const opts=[
+ ['A','接受父親留下的記憶','你想起父親曾承諾會帶你回家。記憶成為抵抗 ECHO 的力量。',5,'父親的牽掛'],
+ ['B','告訴父親你已經長大','你不再依賴父親替你做決定，選擇用自己的意志面對真相。',7,'獨立的意志'],
+ ['C','拒絕這段記憶','你切斷回憶，保住清醒，卻失去理解父親的機會。',7,null]
+ ][i];
+ S.lastResult=opts[2];S.alert=opts[3];if(opts[4])S.items.push(opts[4]);S.history.push(opts[0]+' '+opts[1]+'（隱藏任務）');S.stage='event10';S.flags.hidden=true;save();render();
+}
+function render(){
+ $('alertNum').textContent=S.alert+' / 10';$('alertFill').style.width=(S.alert*10)+'%';$('alertFill').className='fill'+(S.alert>=8?' high':'');
+ $('alertHint').textContent=S.alert>=9?'意識瀕臨崩潰。':'異常正在接近。';
+ $('inventory').innerHTML=S.items.length?S.items.map(x=>'<div class="item">'+esc(x)+'</div>').join(''):'<div class="empty">目前沒有物品</div>';
+ $('survivors').textContent=S.survivors;
+ $('result').classList.toggle('hidden',!S.lastResult);$('resultText').textContent=S.lastResult;
+ $('history').innerHTML=S.history.map(x=>'<li>'+esc(x)+'</li>').join('');
+ if(S.stage==='failed'){ $('chapter').textContent='任務結束';$('eventTitle').textContent='任務失敗';$('story').textContent='警覺度已達上限。你的意識被回聲體吞沒。你可以重新開始，嘗試不同路線。';$('quote').classList.add('hidden');$('choices').innerHTML='<button class="choice" onclick="restart()">重新開始遊戲</button>';return;}
+ if(S.stage==='ending'){ $('chapter').textContent='章節完成';$('eventTitle').textContent='觀測站調查完成';$('story').textContent='你已取得足以前往核心區的線索。接下來將進入主線抉擇，並依照你收集的資料與記憶，開啟不同結局。';$('quote').classList.add('hidden');$('choices').innerHTML='<button class="choice" onclick="finish()">查看結局條件與目前紀錄</button>';return;}
+ if(S.stage==='hidden'){ $('chapter').textContent='隱藏支線｜父親的記憶';$('eventTitle').textContent='特殊事件｜想起父親的故事？';$('story').textContent='你的意識逐漸崩潰。就在視線模糊之際，一段溫暖的記憶將你拉住。你看見年幼的自己與父親站在研究室窗前。';$('quote').textContent='「不管發生什麼事，都要記得自己是誰。」';$('quote').classList.remove('hidden');$('choices').innerHTML='';[['A','接受父親留下的記憶','警覺度將降至 5，取得父親的牽掛。'],['B','告訴父親你已經長大','警覺度將降至 7，取得獨立的意志。'],['C','拒絕這段記憶','警覺度將降至 7，不取得記憶線索。']].forEach((o,i)=>addChoice(o,i,true));return;}
+ const ev=events[S.stage];$('chapter').textContent=ev.chapter;$('eventTitle').textContent=ev.title;$('story').textContent=ev.story;
+ if(ev.quote){$('quote').textContent=ev.quote;$('quote').classList.remove('hidden')}else $('quote').classList.add('hidden');
+ $('choices').innerHTML='';ev.opts.forEach((o,i)=>addChoice(o,i,false));
+}
+function addChoice(o,i,isHidden){const b=document.createElement('button');b.className='choice';b.innerHTML='<b>'+o[0]+'</b>'+esc(o[1])+'<span>'+esc(o[2])+'</span>';b.onclick=()=>isHidden?hiddenChoice(i):choose(i);$('choices').appendChild(b)}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function restart(){if(confirm('確定重新開始？目前存檔會被新進度覆蓋。')){S={alert:0,items:[],history:[],survivors:0,stage:'event08',flags:{},lastResult:'新的調查開始了。',ended:false};save();render()}}
+function finish(){ $('eventTitle').textContent='目前調查成果';$('story').textContent='警覺度：'+S.alert+'/10\\n已取得物品：'+S.items.join('、')+'\\n\\n後續正式版將依據這些物品、記憶與支線紀錄，判定「終結」、「永恆」、「重生」或「最後的回聲」等結局。';$('choices').innerHTML='<button class="choice" onclick="restart()">重新開始</button>'}
+$('continueBtn').onclick=()=>{if(!load())S=initial();showGame()};
+$('newBtn').onclick=()=>{S={alert:0,items:[],history:[],survivors:0,stage:'event08',flags:{},lastResult:'新的調查開始了。',ended:false};save();showGame()};
+$('saveBtn').onclick=()=>{save();$('result').classList.remove('hidden');$('resultText').textContent='進度已儲存。'};
+$('historyBtn').onclick=()=>$('history').classList.toggle('hidden');
+$('resetBtn').onclick=restart;
+if(load())$('saveStatus').textContent='找到本機存檔';
+</script>
+</body>
+</html>
