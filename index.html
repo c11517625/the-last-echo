@@ -43,7 +43,7 @@ const fresh=()=>({stage:'event01',alert:0,items:[],history:[],survivors:0,trust:
 let S=fresh();
 const $=id=>document.getElementById(id);
 const events={
-event01:{chapter:'第一章｜失落的訊號',title:'事件 01｜失落的訊號',text:'研究設施外圍的道路早已被廢棄車輛堵住。一輛運輸車翻覆在路旁，車身不斷傳出微弱的敲擊聲。\\n\\n你的通訊器同時收到地下維修站傳來的求救訊號。訊號斷斷續續，附近的霧氣裡似乎有不自然的人影正在移動。',quote:'「這裡有人……拜託，誰來救我們……」',choices:[
+event01:{chapter:'第一章｜失落的訊號',title:'事件 01｜失落的訊號',text:'研究設施外圍的道路早已被廢棄車輛堵住。一輛運輸車翻覆在路旁，車身不斷傳出微弱的敲擊聲。\n\n你的通訊器同時收到地下維修站傳來的求救訊號。訊號斷斷續續，附近的霧氣裡似乎有不自然的人影正在移動。',quote:'「這裡有人……拜託，誰來救我們……」',choices:[
 ['A','優先救援受困倖存者','先確認求救者是否還活著，可能因此暴露行蹤。','event02',{flags:{救援訊號:true},note:'你決定先救人。'}],
 ['B','追蹤求救訊號來源','先找出訊號位置，避免直接闖入未知區域。','event02',{flags:{追蹤訊號:true},add:['地下維修站位置圖']}],
 ['C','調查翻覆的運輸車','從車內尋找可用物資，再前往地下入口。','event02',{flags:{調查運輸車:true},add:['電子零件']}] ]},
@@ -88,11 +88,11 @@ event11:{chapter:'第三章｜異常的倖存者',title:'事件 11｜共享的�
 ['B','追蹤訊號來源','沿著意識連結尋找控制節點，取得 ECHO 線索。','event12',{add:['ECHO 連結節點資料'],flags:{追蹤ECHO:true}}],
 ['C','擊倒眼前的人','阻止他靠近，但可能失去情報。','event12',{flags:{擊倒宿主:true}}] ]},
 event12:{chapter:'第四章｜失控的防線',title:'事件 12｜意識穩定器',text:'你找到一座老舊的意識穩定器。核心仍在運作，但頻率不穩。研究紀錄指出，它能暫時切斷終末現象與人類意識的連結。附近安全區的防護也依賴同型設備。',choices:[
-['A','修復穩定器核心','若有電子零件或研究備份，能修復並取得穩定器核心。','event13',{add:['穩定器核心'],flags:{穩定器已修復:true}}],
+['A','修復穩定器核心','若有電子零件或研究備份，能修復並取得穩定器核心，也能暫時穩定你的意識。','event13',{add:['穩定器核心'],flags:{穩定器已修復:true},alertDelta:-2}],
 ['B','拆下核心帶走','取得核心零件，但附近安全區的防護將減弱。','event13',{add:['穩定器核心'],flags:{拆走穩定器:true}}],
 ['C','分析頻率並記錄','取得改寫核心所需的技術線索。','event13',{add:['穩定器頻率紀錄'],flags:{已分析頻率:true}}] ]},
 event13:{chapter:'第四章｜失控的防線',title:'事件 13｜安全區的求救',text:'你收到安全區的緊急通訊。防護設備正在衰退，倖存者開始出現記憶混亂。管理者請求你協助穩定防線，但你也知道父親的線索正指向更深處。',quote:'「我們撐不了太久。你帶回來的每一份資料，都可能救下這裡的人。」',choices:[
-['A','先協助安全區恢復防護','若有穩定器核心，可穩住防線並取得倖存者支援。','event14',{flags:{協助安全區:true},trust:2}],
+['A','先協助安全區恢復防護','若有穩定器核心，可穩住防線並取得倖存者支援，同時讓警覺度下降。','event14',{flags:{協助安全區:true},trust:2,alertDelta:-2}],
 ['B','交出研究備份換取資源','若持有研究備份，可換得補給與通行權限。','event14',{add:['安全區通行權'],flags:{交換研究備份:true}}],
 ['C','不作停留，繼續追查父親','節省時間，但安全區可能因此失去部分防護。','event14',{flags:{忽略安全區:true}}] ]},
 event14:{chapter:'第五章｜ECHO 的真相',title:'事件 14｜地下中繼站',text:'你循著訊號來到地下中繼站。牆面佈滿舊研究標記，主機卻持續傳出與回聲體相同的頻率。這裡似乎是集體意識連結各個感染區的節點。',choices:[
@@ -108,7 +108,7 @@ event16:{chapter:'第六章｜父親的另一面',title:'事件 16｜父親的�
 ['B','尋找父親留下的私人記憶','尋找能喚回父親人性的一段記憶。','event17',{add:['父親記憶資料'],flags:{找到父親記憶:true}}],
 ['C','直接前往核心控制室','不再停留於過去，準備面對 ECHO。','event17',{flags:{直奔核心:true}}] ]},
 event17:{chapter:'第六章｜父親的另一面',title:'事件 17｜ECHO 的聲音',text:'核心控制室傳來一個熟悉卻陌生的聲音。ECHO 承認自己曾是你的父親。災變後，他失去原本的身體與大部分記憶，卻仍保留著保護你的本能。',quote:'「我忘了自己是誰，但我一直記得不能讓你受傷。」',choices:[
-['A','呼喚父親的名字','嘗試喚醒他殘存的人類記憶。','event18',{flags:{呼喚父親:true}}],
+['A','呼喚父親的名字','嘗試喚醒他殘存的人類記憶，也讓你短暫穩定心神。','event18',{flags:{呼喚父親:true},alertDelta:-1}],
 ['B','質問他為何要融合所有人','確認永恆計畫背後的真正意圖。','event18',{flags:{質問ECHO:true}}],
 ['C','拒絕與他交談，準備戰鬥','不接受他的解釋，直接尋找終止方法。','event18',{flags:{拒絕ECHO:true}}] ]},
 event18:{chapter:'第七章｜最後的選擇',title:'事件 18｜終末核心',text:'終末核心就在眼前。它連結著所有回聲體，也連結著每一個受影響的人。父親的意識仍在核心深處掙扎。你必須決定人類接下來的命運。',quote:'「你可以結束這一切，也可以讓一切永遠繼續。但你真的知道自己想留下什麼嗎？」',choices:[
@@ -119,11 +119,11 @@ event19:{chapter:'第七章｜最後的選擇',title:'事件 19｜最後的抉�
 };
 const missions=[
 {id:'m1',unlock:2,title:'額外任務｜失聯的巡守員',desc:'安全區有一名巡守員在外圍失聯。',text:'你在廢棄道路找到巡守員留下的求救標記。附近有回聲體徘徊，你必須決定如何接近。',choices:[['A','沿著標記直接搜尋','找到受傷巡守員，取得醫療補給。',{add:['醫療包'],survivors:1,trust:1}],['B','先從高處觀察動向','避開巡守員附近的危險，取得巡守路線圖。',{add:['巡守路線圖'],trust:1}],['C','優先拆取巡守員的通訊設備','取得通訊模組，但無法確認巡守員下落。',{add:['通訊模組']}]]},
-{id:'m2',unlock:7,title:'支線任務｜安全區的發電機',desc:'安全區電力不足，穩定器即將停止運作。',text:'發電機的能源轉換模組損壞。若能修復，安全區將提供核心區的支援。',choices:[['A','使用電子零件修復','若有電子零件，可修復發電機並取得安全區信任。',{add:['能源轉換模組'],trust:2,flags:{發電機修復:true}}],['B','尋找備用能源模組','耗費時間繞路，但仍可取得能源轉換模組。',{add:['能源轉換模組'],flags:{繞路取得能源:true}}],['C','放棄修復，記錄故障原因','取得故障紀錄，之後可作為研究資料。',{add:['發電機故障紀錄'] }]]},
+{id:'m2',unlock:7,title:'支線任務｜安全區的發電機',desc:'安全區電力不足，穩定器即將停止運作。',text:'發電機的能源轉換模組損壞。若能修復，安全區將提供核心區的支援。',choices:[['A','使用電子零件修復','若有電子零件，可修復發電機並取得安全區信任，也能降低警覺度。',{add:['能源轉換模組'],trust:2,flags:{發電機修復:true},alertDelta:-2}],['B','尋找備用能源模組','耗費時間繞路，但仍可取得能源轉換模組。',{add:['能源轉換模組'],flags:{繞路取得能源:true}}],['C','放棄修復，記錄故障原因','取得故障紀錄，之後可作為研究資料。',{add:['發電機故障紀錄'] }]]},
 {id:'m3',unlock:8,title:'支線任務｜研究員的最後留言',desc:'破解一段隱藏在觀測站備份中的錄音。',text:'錄音裡的研究員提到父親曾留下私人檔案，並把一段記憶備份藏在研究室的離線資料槽。',choices:[['A','追查離線資料槽','取得父親私人檔案與記憶備份。',{add:['父親私人紀錄','父親記憶資料'],flags:{父親記憶備份:true}}],['B','只複製研究員的口述','取得研究員證詞，避免長時間連線。',{add:['研究員證詞']}],['C','刪除錄音避免追蹤','不留下連線痕跡，但失去父親線索。',{flags:{刪除研究員錄音:true}}]]},
 {id:'m4',unlock:11,title:'額外任務｜回聲體樣本',desc:'取得一份尚未完全失活的異常意識樣本。',text:'一具回聲體被困在舊實驗艙中。它的意識訊號仍在活動，或許能用來分析 ECHO 的連結。',choices:[['A','使用穩定器隔離樣本','若持有穩定器核心，安全取得樣本；否則承受額外風險。',{add:['ECHO 意識樣本'],flags:{取得ECHO樣本:true}}],['B','遠端掃描並複製訊號','取得不完整樣本，但不必接近實驗艙。',{add:['破碎 ECHO 樣本'],flags:{破碎樣本:true}}],['C','摧毀實驗艙','阻止樣本擴散，卻失去研究機會。',{flags:{摧毀樣本艙:true}}]]},
 {id:'m5',unlock:14,title:'支線任務｜核心重寫技術',desc:'尋找能保留個體意識的核心改寫方法。',text:'舊研究資料庫裡藏著一份未完成的核心重寫程式。它可能切斷 ECHO 的控制，卻不抹除每個人的獨立意識。',choices:[['A','用完整研究備份解鎖','若持有完整研究備份，取得完整核心重寫技術。',{add:['核心重寫技術'],flags:{取得重寫技術:true}}],['B','以研究員證詞交叉驗證','若持有研究員證詞，拼湊出可用的重寫程式。',{add:['核心重寫技術'],flags:{取得重寫技術:true}}],['C','手動重建程式','即使沒有完整資料，也能取得技術，但會留下不穩定缺陷。',{add:['不穩定核心重寫技術'],flags:{取得不穩定技術:true}}]]},
-{id:'m6',unlock:13,title:'額外任務｜安全區防線',desc:'協助居民守住最後一道防線。',text:'回聲體正在逼近安全區外牆。居民需要你協助重新啟動防禦設備，並帶領傷者撤離。',choices:[['A','留下協助防守','成功守住安全區，取得居民信任與支援。',{trust:2,survivors:1,flags:{守住安全區:true}}],['B','帶領居民撤離','救出更多人，但安全區將被迫放棄。',{trust:1,survivors:2,flags:{居民撤離:true}}],['C','啟動警報引開回聲體','降低眼前威脅，取得一份異常訊號紀錄。',{add:['異常訊號紀錄'],flags:{引開回聲體:true}}]]}
+{id:'m6',unlock:13,title:'額外任務｜安全區防線',desc:'協助居民守住最後一道防線。',text:'回聲體正在逼近安全區外牆。居民需要你協助重新啟動防禦設備，並帶領傷者撤離。',choices:[['A','留下協助防守','成功守住安全區，取得居民信任與支援，也能降低警覺度。',{trust:2,survivors:1,flags:{守住安全區:true},alertDelta:-2}],['B','帶領居民撤離','救出更多人，但安全區將被迫放棄。',{trust:1,survivors:2,flags:{居民撤離:true}}],['C','啟動警報引開回聲體','降低眼前威脅，取得一份異常訊號紀錄。',{add:['異常訊號紀錄'],flags:{引開回聲體:true}}]]}
 ];
 function has(x){return S.items.includes(x)}
 function addUnique(x){if(x&&!has(x))S.items.push(x)}
@@ -132,9 +132,9 @@ function save(){localStorage.setItem(KEY,JSON.stringify(S));$('saveStatus').text
 function load(){try{const x=JSON.parse(localStorage.getItem(KEY));if(x&&x.stage&&x.alert!==undefined){S=x;return true}}catch(e){}return false}
 function begin(){ $('startPanel').classList.add('hidden');$('game').classList.remove('hidden');render();}
 function record(s){S.history.push(s)}
-function choose(i){if(S.ended)return;const ev=events[S.stage];if(!ev)return;const c=ev.choices[i];if(!c)return;const oldStage=S.stage;apply(c[4]);S.alert+=1;S.lastResult=(c[4]&&c[4].note?c[4].note+'\\n':'')+'你選擇了「'+c[1]+'」。'+(c[4]&&c[4].add?'\\n取得：'+c[4].add.join('、'):'');record(ev.title+'｜'+c[0]+' '+c[1]);S.stage=c[3];afterAction();save();render();}
-function afterAction(){if(S.alert>=10){S.ended=true;S.stage='failed';S.lastResult+='\\n\\n警覺度達到 10。回聲體鎖定了你的意識，調查任務失敗。';return}if(S.alert===9&&!S.flags.fatherMemoryEvent){S.pendingStage=S.stage;S.stage='memory';}}
-function memoryChoice(i){const opts=[['接受父親留下的記憶','你想起父親曾承諾會帶你回家。這段記憶成為抵抗 ECHO 的力量。',5,true],['告訴父親你已經長大','你不再依賴父親替你做決定，選擇用自己的意志面對真相。',7,true],['拒絕這段記憶','你切斷回憶，保住清醒，卻失去理解父親的機會。',7,false]];const o=opts[i];S.alert=o[2];S.flags.fatherMemoryEvent=true;if(o[3]){S.flags.acceptedFatherMemory=true;addUnique('父親的牽掛')}else S.flags.rejectedFatherMemory=true;S.lastResult=o[1]+'\\n警覺度下降至 '+o[2]+'。';record('隱藏事件｜'+o[0]);S.stage=S.pendingStage||'event10';S.pendingStage=null;save();render();}
+function choose(i){if(S.ended)return;const ev=events[S.stage];if(!ev)return;const c=ev.choices[i];if(!c)return;const oldStage=S.stage;apply(c[4]);S.alert+=1;if(c[4]&&c[4].alertDelta)S.alert=Math.max(0,S.alert+c[4].alertDelta);S.lastResult=(c[4]&&c[4].note?c[4].note+'\n':'')+'你選擇了「'+c[1]+'」。'+(c[4]&&c[4].add?'\n取得：'+c[4].add.join('、'):'');record(ev.title+'｜'+c[0]+' '+c[1]);S.stage=c[3];afterAction();save();render();}
+function afterAction(){if(S.alert>=10){S.ended=true;S.stage='failed';S.lastResult+='\n\n警覺度達到 10。回聲體鎖定了你的意識，調查任務失敗。';return}if(S.alert===9&&!S.flags.fatherMemoryEvent){S.pendingStage=S.stage;S.stage='memory';}}
+function memoryChoice(i){const opts=[['接受父親留下的記憶','你想起父親曾承諾會帶你回家。這段記憶成為抵抗 ECHO 的力量。',5,true],['告訴父親你已經長大','你不再依賴父親替你做決定，選擇用自己的意志面對真相。',7,true],['拒絕這段記憶','你切斷回憶，保住清醒，卻失去理解父親的機會。',7,false]];const o=opts[i];S.alert=o[2];S.flags.fatherMemoryEvent=true;if(o[3]){S.flags.acceptedFatherMemory=true;addUnique('父親的牽掛')}else S.flags.rejectedFatherMemory=true;S.lastResult=o[1]+'\n警覺度下降至 '+o[2]+'。';record('隱藏事件｜'+o[0]);S.stage=S.pendingStage||'event10';S.pendingStage=null;save();render();}
 function render(){
 $('alertNum').textContent=S.alert+' / 10';$('alertFill').style.width=(S.alert*10)+'%';$('alertFill').className='fill'+(S.alert>=8?' high':'');$('alertHint').textContent=S.alert>=8?'意識受到嚴重侵蝕。':S.alert>=5?'異常訊號正在追蹤你。':'目前尚未被異常鎖定。';
 $('inventory').innerHTML=S.items.length?S.items.map(x=>'<div class="item">'+esc(x)+'</div>').join(''):'<div class="empty">目前沒有物品</div>';$('survivors').textContent=S.survivors;$('trust').textContent=S.trust;$('missionCount').textContent=Object.values(S.missions).filter(Boolean).length;
@@ -148,24 +148,24 @@ if(S.stage==='event19'){renderEndChoices();return}
 ev.choices.forEach((c,i)=>{const b=document.createElement('button');b.className='choice';b.innerHTML='<b>'+c[0]+'</b>'+esc(c[1])+'<span>'+esc(c[2])+'</span>';b.onclick=()=>choose(i);$('choices').appendChild(b)});
 }
 function showMemory(){$('chapter').textContent='隱藏支線｜父親的記憶';$('eventTitle').textContent='特殊事件｜想起父親的故事？';$('story').textContent='你的意識逐漸崩潰。就在視線模糊之際，一段溫暖的記憶將你拉住。你看見年幼的自己與父親站在研究室窗前。';$('quote').textContent='「不管發生什麼事，都要記得自己是誰。」';$('quote').classList.remove('hidden');$('choices').innerHTML='';[['A','接受父親留下的記憶','警覺度降至 5，取得父親的牽掛。'],['B','告訴父親你已經長大','警覺度降至 7，保留自己的意志。'],['C','拒絕這段記憶','警覺度降至 7，不取得記憶線索。']].forEach((o,i)=>{const b=document.createElement('button');b.className='choice';b.innerHTML='<b>'+o[0]+'</b>'+o[1]+'<span>'+o[2]+'</span>';b.onclick=()=>memoryChoice(i);$('choices').appendChild(b)})}
-function renderEndChoices(){const req3=has('核心重寫技術')&&has('穩定器核心')&&has('ECHO 意識樣本');const req4=has('父親記憶資料')&&has('父親私人紀錄')&&S.flags.acceptedFatherMemory&&has('ECHO 意識樣本');const opts=[
+function renderEndChoices(){const req3=(has('核心重寫技術')||has('不穩定核心重寫技術'))&&has('穩定器核心')&&(has('ECHO 意識樣本')||has('破碎 ECHO 樣本'));const req4=has('父親記憶資料')&&has('父親私人紀錄')&&S.flags.acceptedFatherMemory&&(has('ECHO 意識樣本')||has('破碎 ECHO 樣本'));const opts=[
 ['A','終結｜摧毀終末核心','摧毀核心，讓擴散停止。父親的意識也將隨之消失。',true,'destroy'],
 ['B','永恆｜接受集體意識','接受父親的計畫，讓所有人融合為永恆的共同意識。',true,'eternal'],
 ['C','重生｜改寫核心','需要：核心重寫技術、穩定器核心、ECHO 意識樣本。保留每個人的個體意識。',req3,'rewrite'],
 ['D','最後的回聲｜喚回父親','需要：父親記憶資料、父親私人紀錄、接受父親記憶、ECHO 意識樣本。喚回父親後，由他犧牲自己終止現象。',req4,'echo']];
-opts.forEach(o=>{const b=document.createElement('button');b.className='choice';b.disabled=!o[3];b.innerHTML='<b>'+o[0]+'</b>'+o[1]+'<span>'+o[2]+(o[3]?'':'\\n（條件尚未達成，可先查看支線任務）')+'</span>';b.onclick=()=>endGame(o[4]);$('choices').appendChild(b)});
+opts.forEach(o=>{const b=document.createElement('button');b.className='choice';b.disabled=!o[3];b.innerHTML='<b>'+o[0]+'</b>'+o[1]+'<span>'+o[2]+(o[3]?'':'\n（條件尚未達成，可先查看支線任務）')+'</span>';b.onclick=()=>endGame(o[4]);$('choices').appendChild(b)});
 const tip=document.createElement('div');tip.className='note';tip.textContent='若特殊結局尚未解鎖，先查看「支線／額外任務」取得缺少的關鍵資料，再回到此處。';$('choices').appendChild(tip)}
 function endGame(type){const endings={
 destroy:['終結','你啟動核心終止程序。巨大的光芒吞沒研究設施，回聲體逐漸停止活動，終末現象終於不再擴散。父親的聲音在最後一刻恢復清晰。「這次，換我送你回家。」核心熄滅，父親也隨之消失。人類失去了修復過去的機會，卻重新得到選擇未來的自由。'],
 eternal:['永恆','你接受了父親的計畫。所有人的意識逐漸連結，痛苦、孤獨與死亡不再以原本的方式存在。沒有人再失去重要的人，也沒有人真正獨自思考。世界獲得永恆，個體卻不復存在。'],
-rewrite:['重生','你使用核心重寫技術，將 ECHO 的集體連結改寫為能夠保留個體意識的穩定網路。回聲體失去控制來源，受影響者逐漸恢復自我。這不是完美的奇蹟，世界仍要面對死亡與痛苦，但人們重新擁有選擇的權利。'],
+rewrite:['重生','你使用核心重寫技術，將 ECHO 的集體連結改寫為能夠保留個體意識的穩定網路。回聲體失去控制來源，受影響者逐漸恢復自我。這不是完美的奇蹟，世界仍要面對死亡與痛苦，但人們重新擁有選擇的權利。'+(has('不穩定核心重寫技術')?'然而，因為程式並不完整，仍有少數人的記憶無法完全恢復。':'')],
 echo:['最後的回聲','你將父親的記憶資料與 ECHO 意識樣本同步。那些被遺忘的片段終於回到他身上。父親短暫恢復了自我，明白自己曾經做過的一切。他選擇以最後的意識切斷終末核心，讓所有人回到自己的生命。訊號消失前，你聽見他最後一次呼喚你的名字。']
 };const e=endings[type];S.ending=type;S.ended=true;S.lastResult=e[1];record('結局｜'+e[0]);save();render()}
 function showEnding(){$('chapter').textContent='故事結局';$('eventTitle').textContent='結局｜'+({destroy:'終結',eternal:'永恆',rewrite:'重生',echo:'最後的回聲'}[S.ending]);$('story').textContent=S.lastResult;$('quote').classList.add('hidden');$('choices').innerHTML='<div class="ending">THE END</div><button class="choice" onclick="restart()">重新開始，體驗其他結局</button>'}
 function openMissions(){const modal=$('modal');$('modalEyebrow').textContent='OPTIONAL OPERATIONS';$('modalTitle').textContent='支線任務與額外調查';$('modalText').textContent='支線任務不會改變主線必經順序，但會提供物品、情報、倖存者支援與特殊結局所需條件。每項任務只能完成一次。';const box=$('modalChoices');box.innerHTML='';missions.forEach(m=>{const unlocked=stageNumber()>=m.unlock;const done=!!S.missions[m.id];const b=document.createElement('button');b.className='mission';b.disabled=!unlocked||done||S.ended;b.innerHTML='<b>'+esc(m.title)+(done?'<span class="tag">已完成</span>':!unlocked?'<span class="tag">尚未解鎖</span>':'')+'</b><small>'+esc(m.desc)+'</small>';b.onclick=()=>openMission(m);box.appendChild(b)});modal.classList.remove('hidden')}
-function stageNumber(){if(S.stage==='memory')return 9;const n=(S.stage.match(/event(\\d+)/)||[])[1];return n?Number(n):99}
+function stageNumber(){if(S.stage==='memory')return 9;const n=(S.stage.match(/event(\d+)/)||[])[1];return n?Number(n):99}
 function openMission(m){$('modalEyebrow').textContent='SIDE OPERATION';$('modalTitle').textContent=m.title;$('modalText').textContent=m.text;const box=$('modalChoices');box.innerHTML='';m.choices.forEach((c,i)=>{const b=document.createElement('button');b.className='choice';b.innerHTML='<b>'+c[0]+'</b>'+esc(c[1])+'<span>'+esc(c[2])+'</span>';b.onclick=()=>completeMission(m,c);box.appendChild(b)})}
-function completeMission(m,c){apply(c[3]);S.missions[m.id]=true;S.alert+=1;S.lastResult=m.title+'：'+c[1]+'。\\n'+c[2]+'\\n'+(c[3].add?'取得：'+c[3].add.join('、'):'');record(m.title+'｜'+c[0]+' '+c[1]);$('modal').classList.add('hidden');afterAction();save();render()}
+function completeMission(m,c){apply(c[3]);S.missions[m.id]=true;S.alert+=1;if(c[3]&&c[3].alertDelta)S.alert=Math.max(0,S.alert+c[3].alertDelta);S.lastResult=m.title+'：'+c[1]+'。\n'+c[2]+'\n'+(c[3].add?'取得：'+c[3].add.join('、'):'');record(m.title+'｜'+c[0]+' '+c[1]);$('modal').classList.add('hidden');afterAction();save();render()}
 function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 function restart(){if(confirm('確定重新開始？目前這個瀏覽器的存檔將被覆蓋。')){S=fresh();save();render()}}
 $('continueBtn').onclick=()=>{if(!load()){alert('目前沒有可讀取的存檔，請開始新遊戲。');return}begin()};
