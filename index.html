@@ -21,11 +21,11 @@ button{font:inherit;cursor:pointer}.wrap{max-width:980px;margin:auto;padding:20p
     <div class="eyebrow">存檔讀取</div><h2 class="event-title">準備好再次進入禁區了嗎？</h2>
     <p class="story">這個版本會記錄你的警覺度、物品、選擇與劇情進度。你可以隨時關閉頁面，下次再從同一台裝置繼續。</p>
     <div class="actions"><button class="choice" id="continueBtn">載入目前進度</button><button class="smallbtn" id="newBtn">重新開始</button></div>
-    <div class="muted" style="margin-top:12px">內建測試存檔：警覺度 8｜事件 08「實驗對象 07」</div>
+    <div class="muted" style="margin-top:12px">新遊戲將從第一章事件 01 開始。存檔只保存在目前使用的瀏覽器。</div>
   </div>
   <div id="game" class="layout hidden">
     <main class="panel">
-      <div class="eyebrow" id="chapter">第二章｜失落的研究紀錄</div>
+      <div class="eyebrow" id="chapter">第一章｜失落的訊號</div>
       <h2 class="event-title" id="eventTitle"></h2>
       <div class="story" id="story"></div>
       <div class="quote hidden" id="quote"></div>
@@ -54,13 +54,20 @@ button{font:inherit;cursor:pointer}.wrap{max-width:980px;margin:auto;padding:20p
 </div>
 <script>
 const KEY='lastEchoSave_v1';
-const initial=()=>({alert:8,items:['地下通行卡','研究員口述密碼','實驗室通行紀錄','破損研究資料（部分修復）','父親的實驗座標','完整研究備份'],history:['救援倖存者','強行開門，救出兩人並取得地下通行卡','詢問已故研究員的詳細情報','使用地下通行卡進入實驗室','複製部分資料並撤離','修復破損影像','破解觀測站電子鎖'],survivors:2,stage:'event08',flags:{},lastResult:'目前存檔已載入。觀測站終端機仍然開著，你的實驗紀錄受到加密。',ended:false});
+const initial=()=>({alert:0,items:[],history:[],survivors:0,stage:'event01',flags:{},lastResult:'調查開始。先確認求救訊號的來源。',ended:false});
 let S=initial();
 const $=id=>document.getElementById(id);
 function save(){localStorage.setItem(KEY,JSON.stringify(S));$('saveStatus').textContent='已儲存';}
 function load(){try{const x=JSON.parse(localStorage.getItem(KEY));if(x&&x.alert!==undefined){S=x;return true}}catch(e){}return false}
 function showGame(){ $('startPanel').classList.add('hidden');$('game').classList.remove('hidden');render(); }
 const events={
+event01:{chapter:'第一章｜失落的訊號',title:'事件 01｜失落的訊號',story:'研究設施外圍的道路早已被廢棄車輛堵住。一輛運輸車翻覆在路旁，車身不斷傳出微弱的敲擊聲。\\n\\n你的通訊器同時收到地下維修站傳來的求救訊號。訊號斷斷續續，附近的霧氣裡似乎有不自然的人影正在移動。',quote:'「這裡有人……拜託，誰來救我們……」',opts:[['A','優先救援受困倖存者','先確認求救者是否還活著，可能因此暴露行蹤。','rescue01'],['B','追蹤求救訊號來源','先找出訊號位置，避免直接闖入未知區域。','track01'],['C','同時調查運輸車與地下入口','爭取更多情報，但會花費較多時間。','both01']]},
+event02:{chapter:'第一章｜失落的訊號',title:'事件 02｜強行開門',story:'你抵達地下維修站入口。厚重的鐵門被扭曲的金屬卡死，門後傳來急促的敲擊聲。\\n\\n然而，走廊盡頭也傳來拖行聲。若繼續停留，恐怕會引來回聲體。',quote:'「門外的是人嗎？快點……它們要進來了！」',opts:[['A','直接強行打開鐵門','立刻救人，但可能驚動附近的回聲體。','forceDoor'],['B','尋找旁邊的維修通道','花時間繞路，降低正面衝突的風險。','maintenanceRoute'],['C','製造聲響引開回聲體','先轉移威脅，再趁空檔救援。','lureEcho']]},
+event03:{chapter:'第一章｜失落的訊號',title:'事件 03｜倖存者的情報',story:'鐵門後有兩名倖存者。他們告訴你，地下室深處有一條通往研究實驗區的道路。\\n\\n其中一人提到，先前有位研究員曾躲在那裡；即使研究員已經死亡，通訊設備偶爾仍會傳出他的聲音。',quote:'「那個研究員死前一直說，有人不能讓實驗資料落入 ECHO 手裡。」',opts:[['A','先帶倖存者前往安全區','確保兩人安全，但可能錯過深入調查的時機。','escortSurvivors'],['B','詢問已故研究員的詳細情報','取得通往實驗區的線索與研究員留下的口述密碼。','askResearcher'],['C','讓倖存者留在原地，獨自前往','立即深入地下實驗區，但缺少更多情報。','goAlone']]},
+event04:{chapter:'第一章｜失落的訊號',title:'事件 04｜實驗室入口',story:'沿著地下通道前進，你來到一扇封鎖的實驗室安全門。門旁的讀卡機仍有電力，螢幕顯示需要研究設施的通行權限。\\n\\n門內傳來低頻運轉聲，像是某台設備仍在持續工作。',opts:[['A','使用地下通行卡開門','若卡片有效，就能安靜進入實驗室。','useCard'],['B','輸入研究員留下的口述密碼','嘗試繞過讀卡限制，可能留下系統紀錄。','usePassword'],['C','破壞門鎖強行進入','不依賴權限，但可能觸發警報。','breakLock']]},
+event05:{chapter:'第一章｜失落的訊號',title:'事件 05｜封存的研究資料',story:'實驗室內散落著研究紀錄與損壞的儲存裝置。主機畫面顯示部分資料已被刪除，剩餘檔案則受到加密。\\n\\n你注意到一份影像檔案的名稱與父親過去的研究代號相同。時間有限，你必須決定先帶走什麼。',quote:'「若你看到這份紀錄，代表我可能已經來不及親自告訴你真相。」',opts:[['A','優先檢查父親的私人檔案','尋找父親失蹤前留下的訊息。','inspectFatherFiles'],['B','嘗試完整解密研究主機','取得更多資料，但需要時間與設備。','decryptLab'],['C','複製現有資料後立即撤離','保留部分研究資料與電子零件，避免逗留太久。','copyAndLeave']]},
+event06:{chapter:'第一章｜失落的訊號',title:'事件 06｜修復破損影像',story:'撤離途中，你在安全角落檢查剛才複製的資料。影像檔案嚴重受損，只剩幾個模糊畫面與不完整座標。\\n\\n若使用帶出的電子零件，也許能讓影像恢復到足以辨識的程度。',opts:[['A','消耗電子零件修復影像','修復部分研究資料，並取得父親的實驗座標。','repairImage'],['B','只分析目前能讀取的片段','不消耗零件，但座標資訊可能不完整。','analyzeImage'],['C','先保留資料，繼續前往觀測站','不花時間修復，將線索留待之後處理。','saveImage']]},
+event07:{chapter:'第一章｜失落的訊號',title:'事件 07｜廢棄觀測站',story:'父親留下的線索將你帶到一座廢棄觀測站。站內主機保存著研究設施的備份資料，但入口電子鎖仍在運作。\\n\\n你記得倖存者提過研究員留下的口述密碼；除此之外，觀測站外側還有排水通道與監視設備。',quote:'「觀測站的備份不能落入他們手中。尤其是那份關於 07 號實驗對象的紀錄。」',opts:[['A','使用研究員口述密碼破解電子鎖','直接進入主機室，取得完整研究備份。','hackObservatory'],['B','從地下排水道潛入','避開正門，但可能遺失部分備份資料。','drainObservatory'],['C','啟動外部監視器後再進入','先確認周遭動態，降低遭伏擊的風險。','cameraObservatory']]},
 event08:{chapter:'第二章｜失落的研究紀錄',title:'事件 08｜實驗對象 07',story:'觀測站深處有一台尚未關閉的終端機。螢幕顯示，你的實驗紀錄仍然存在，但檔案受到加密。\\n\\n終端機旁還有一份未完成的訊息：「若實驗對象 07 回到這裡，請讓他知道……穩定器不是為了控制他。」',quote:'「他不是實驗品。他是我們最後的希望。」',opts:[['A','解密自己的實驗紀錄','查明自己為何能抵抗終末現象。','decrypt'],['B','搜尋父親的私人檔案','追查父親失蹤前真正的目的。','father'],['C','立即摧毀終端機','避免資料落入 ECHO 手中，但可能失去重要線索。','destroy']]},
 event09:{chapter:'第二章｜失落的研究紀錄',title:'事件 09｜記憶的裂縫',story:'終端機突然亮起。螢幕上出現一段不屬於你的童年影像：一個小男孩坐在研究室外，父親蹲下來替他繫好鞋帶。\\n\\n你從未記得這段往事，卻對那個聲音感到熟悉。',quote:'「如果你忘記了回家的路，就記得有人一直在等你。」',opts:[['A','追隨記憶中的聲音','嘗試定位影像來源。','memory'],['B','切斷終端機連線','避免異常訊號侵入意識。','disconnect'],['C','調查影像的時間戳記','比對父親研究紀錄，尋找真實性。','timestamp']]},
 event10:{chapter:'第三章｜異常的倖存者',title:'事件 10｜觀測站外的人影',story:'離開觀測站時，一名穿著舊研究制服的人站在遠處。他的臉孔模糊，卻準確喊出你的名字。\\n\\n「你終於來了。ECHO 已經知道你在這裡。」',opts:[['A','靠近並交談','可能取得核心區座標，也可能暴露位置。','talk'],['B','躲在掩體後觀察','先確認對方是否受到控制。','observe'],['C','立即撤離觀測站','避開未知接觸，但放棄眼前線索。','flee']]},
@@ -69,6 +76,27 @@ event12:{chapter:'第四章｜被遺忘的實驗',title:'事件 12｜穩定器�
 };
 function outcome(key){
  const map={
+ rescue01:['你找到兩名被困在地下維修站的倖存者，但回聲體也注意到你的行蹤。','倖存者求救座標','event02'],
+ track01:['你確認訊號來自地下維修站，並標記一條較安全的接近路線。','地下維修站位置圖','event02'],
+ both01:['你同時確認翻覆運輸車與地下入口，從車內找到可用的電子零件，但調查時間拉長。','電子零件','event02'],
+ forceDoor:['你強行撬開鐵門，回聲體聞聲逼近。你仍成功救出兩名倖存者，並在門邊找到一張地下通行卡。','地下通行卡','event03'],
+ maintenanceRoute:['你從維修通道繞到門後，成功救出倖存者並取得地下通行卡，但途中耗費不少時間。','地下通行卡','event03'],
+ lureEcho:['你將回聲體引離入口，趁空檔救出兩名倖存者，並取得地下通行卡。','地下通行卡','event03'],
+ escortSurvivors:['你先護送兩名倖存者前往安全區。途中他們告訴你研究設施的位置，但沒有提供研究員的口述密碼。','安全區路線紀錄','event04'],
+ askResearcher:['你仔細詢問研究員留下的訊息，得知地下實驗區的路線，也記下了研究員口述的系統密碼。','研究員口述密碼','event04'],
+ goAlone:['你沒有等待倖存者，獨自前往地下實驗區。雖然節省時間，卻只能依靠現有地圖摸索。','地下實驗區草圖','event04'],
+ useCard:['地下通行卡成功解鎖安全門。你在入口終端留下的紀錄中找到一筆實驗室通行紀錄。','實驗室通行紀錄','event05'],
+ usePassword:['口述密碼成功通過第一層驗證，但系統留下異常登入紀錄。你仍取得實驗室通行紀錄。','實驗室通行紀錄','event05'],
+ breakLock:['你破壞讀卡機進入實驗室，警報短暫響起。門鎖零件或許還能在之後派上用場。','損壞的門鎖零件','event05'],
+ inspectFatherFiles:['你找到父親的私人資料夾，但檔案需要更高權限才能開啟。你複製了部分影像與一份電子零件。','破損研究資料','event06'],
+ decryptLab:['你花時間破解主機，取得部分研究資料與電子零件，但父親的影像仍然損壞。','破損研究資料','event06'],
+ copyAndLeave:['你迅速複製現有資料後撤離，帶走破損研究資料與可用電子零件。','破損研究資料','event06'],
+ repairImage:['你消耗電子零件修復影像。畫面中出現父親曾到訪的座標，研究資料也恢復了部分內容。','父親的實驗座標','event07'],
+ analyzeImage:['你從殘存畫面辨識出父親曾前往觀測站，但無法確認更精確的位置。','模糊的觀測站座標','event07'],
+ saveImage:['你保留受損影像，沒有消耗零件。雖然暫時沒有新線索，但資料仍可在之後修復。','未修復的影像檔','event07'],
+ hackObservatory:['你輸入研究員留下的口述密碼，成功破解電子鎖，並下載完整研究備份。','完整研究備份','event08'],
+ drainObservatory:['你從排水道潛入觀測站，避開正門的警報，但主機部分資料已損毀，只能取得不完整備份。','不完整研究備份','event08'],
+ cameraObservatory:['你啟動外部監視器確認周遭安全，再進入主機室。你取得研究備份，但部分檔案在撤離時遺失。','部分研究備份','event08'],
  decrypt:['你成功解開個人檔案。紀錄顯示你曾是意識穩定實驗的核心對象，父親親自批准了實驗。','實驗對象 07 完整檔案','event09'],
  father:['私人檔案被加密，但你找到父親留下的語音片段。他曾試圖阻止某項名為「永恆計畫」的研究。','父親的語音片段','event09'],
  destroy:['終端機冒出火花，資料被摧毀。你阻止了遠端連線，但失去了完整檔案。','燒毀的資料晶片','event09'],
@@ -91,7 +119,7 @@ function choose(i){
  if(S.ended)return;
  const ev=events[S.stage];if(!ev)return;
  const opt=ev.opts[i],key=opt[3];S.alert++;
- const r=outcome(key);S.lastResult=r[0];S.items.push(r[1]);S.history.push(opt[0]+' '+opt[1]);
+ const r=outcome(key);S.lastResult=r[0];if(key==='repairImage'&&S.items.includes('電子零件'))S.items=S.items.filter(x=>x!=='電子零件');if(r[1]&&!S.items.includes(r[1]))S.items.push(r[1]);S.history.push(opt[0]+' '+opt[1]);
  S.flags[key]=true;S.stage=r[2];
  if(S.alert>=10){S.ended=true;S.stage='failed';S.lastResult+='\\n\\n警覺度達到 10，回聲體鎖定了你的意識。任務失敗。'}
  else if(S.alert===9){S.stage='hidden';S.lastResult+='\\n\\n就在你準備離開時，一段熟悉的記憶突然浮現。';}
@@ -121,10 +149,10 @@ function render(){
 }
 function addChoice(o,i,isHidden){const b=document.createElement('button');b.className='choice';b.innerHTML='<b>'+o[0]+'</b>'+esc(o[1])+'<span>'+esc(o[2])+'</span>';b.onclick=()=>isHidden?hiddenChoice(i):choose(i);$('choices').appendChild(b)}
 function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-function restart(){if(confirm('確定重新開始？目前存檔會被新進度覆蓋。')){S={alert:0,items:[],history:[],survivors:0,stage:'event08',flags:{},lastResult:'新的調查開始了。',ended:false};save();render()}}
+function restart(){if(confirm('確定重新開始？目前存檔會被新進度覆蓋。')){S=initial();S.lastResult='新的調查開始了。';save();render()}}
 function finish(){ $('eventTitle').textContent='目前調查成果';$('story').textContent='警覺度：'+S.alert+'/10\\n已取得物品：'+S.items.join('、')+'\\n\\n後續正式版將依據這些物品、記憶與支線紀錄，判定「終結」、「永恆」、「重生」或「最後的回聲」等結局。';$('choices').innerHTML='<button class="choice" onclick="restart()">重新開始</button>'}
 $('continueBtn').onclick=()=>{if(!load())S=initial();showGame()};
-$('newBtn').onclick=()=>{S={alert:0,items:[],history:[],survivors:0,stage:'event08',flags:{},lastResult:'新的調查開始了。',ended:false};save();showGame()};
+$('newBtn').onclick=()=>{S=initial();S.lastResult='新的調查開始了。';save();showGame()};
 $('saveBtn').onclick=()=>{save();$('result').classList.remove('hidden');$('resultText').textContent='進度已儲存。'};
 $('historyBtn').onclick=()=>$('history').classList.toggle('hidden');
 $('resetBtn').onclick=restart;
